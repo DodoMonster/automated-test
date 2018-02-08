@@ -1,0 +1,53 @@
+{
+  "name": "automated-test",
+  "version": "1.0.0",
+  "description": "基于koa+vue2+webpack+puppeteer的自动化测试管理后台",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test",
+    "start": "node ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DodoMonster/automated-test.git"
+  },
+  "keywords": [
+    "基于koa+vue2+webpack+puppeteer的自动化测试管理后台"
+  ],
+  "author": "dodomonster",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DodoMonster/automated-test/issues"
+  },
+  "homepage": "https://github.com/DodoMonster/automated-test#readme",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "element-ui": "^2.1.0",
+    "koa": "^2.4.1",
+    "koa-onerror": "^4.0.0",
+    "vue": "^2.5.13",
+    "vue-router": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-runtime": "^6.26.0",
+    "css-loader": "^0.28.9",
+    "eslint-friendly-formatter": "^3.0.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "html-webpack-plugin": "^2.30.1",
+    "koa-webpack": "^2.0.3",
+    "style-loader": "^0.20.1",
+    "url-loader": "^0.6.2",
+    "vue-loader": "^14.1.1",
+    "vue-style-loader": "^3.1.2",
+    "vue-template-compiler": "^2.5.13",
+    "webpack": "^3.10.0",
+    "webpack-merge": "^4.1.1"
+  }
+}
