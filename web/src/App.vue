@@ -14,7 +14,7 @@
                         <i class="el-icon-tickets"></i>
                         <span>项目管理</span>
                     </el-menu-item>
-                    <el-menu-item index="/addTask">
+                    <el-menu-item index="/addScript">
                         <i class="el-icon-printer"></i>
                         <span>创建测试脚本</span>
                     </el-menu-item>
@@ -64,7 +64,6 @@
     .el-header {
         height: 80px;
         /* background-color: rgb(64, 158, 255); */
-        /* background: #48494b; */
         background: #324057;
     }
 </style>

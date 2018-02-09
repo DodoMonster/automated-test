@@ -1,17 +1,19 @@
-<template src="./addTask.tpl">
+<template src="./addScript.tpl">
 
 </template>
 
 <script>
+    import Util from '~/lib/util';
     export default {
         data() {
             return {
-                addTaskData: {
-                    project: '',
+                addScriptData: {
+                    projectId: '',
                     taskName: '',
                     taskDesc: '',
                     hasParams: false,
-                    paramsList: [{}]
+                    paramsList: [{}],
+                    filePath: ''
                 },
                 projectList: [{
                     projectName: '项目1',
@@ -37,15 +39,29 @@
         },
         methods: {
             addParams() {
-                this.addTaskData.paramsList.push({
+                this.addScriptData.paramsList.push({
                     name: '',
                     key: ''
                 });
             },
             delParams(index) {
-                this.addTaskData.paramsList.splice(index, 1);
+                this.addScriptData.paramsList.splice(index, 1);
             },
-            createTask() {},
+            createScript() {
+                console.log(this.addScriptData.filePath);
+                let formData = Util.getFormData(this.addScriptData.filePath);
+                this.$http.post('/api/createScript', formData)
+                    .then(function(response) {
+                        console.log(response);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+            getScriptFile(file) {
+                console.log(file);
+                this.addScriptData.filePath = file.raw;
+            },
             handlePreview() {},
             handleRemove() {},
             beforeRemove() {},

@@ -4,7 +4,7 @@ import VueRouter from 'vue-router';
 import ElementUI from 'element-ui';
 import axios from 'axios';
 import index from '~/page/index.vue';
-import addTask from '~/page/addTask.vue';
+import addScript from '~/page/addScript.vue';
 import addTest from '~/page/addTest.vue';
 import userAdmin from '~/page/userAdmin.vue';
 import projectAdmin from '~/page/projectAdmin.vue';
@@ -24,11 +24,11 @@ const routes = [{
   path: '/index',
   component: index
 }, {
-  path: '/addTask',
-  component: addTask
+  path: '/addScript',
+  component: addScript
 }, {
   path: '/editTask/:id',
-  component: addTask
+  component: addScript
 }, {
   path: '/addTest',
   component: addTest

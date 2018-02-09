@@ -1,10 +1,24 @@
 const Koa = require('koa');
 const app = new Koa();
-const Config = require('./config/config');
+const bodyParser = require('koa-bodyparser');
+const join = require('path').join;
 const onerror = require('koa-onerror');
 const middleware = require('koa-webpack');
 const webpackDev = require('./build/webpack.dev.conf');
+const model = join(__dirname, 'app/model');
+var Router = require('koa-router');
+var router = new Router();
+const rest = require('./config/rest');
 
+app.use(bodyParser());
+app.use(rest.restify());
+app.use(router.routes()).use(router.allowedMethods());
+
+require('./app/router.js')(router);
+
+// fs.readdirSync(model)
+//     .filter(file => ~file.search(/^[^\.].*\.js$/))
+//     .forEach(file => require(join(model, file)));
 
 //错误信息处理
 onerror(app);
@@ -25,4 +39,5 @@ app.use(middleware({
         }
     }
 }));
-app.listen(Config.node.port || 3000);
+
+app.listen(process.env.PORT || 3011);

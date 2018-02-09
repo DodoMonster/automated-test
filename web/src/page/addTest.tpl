@@ -12,7 +12,7 @@
                     <el-input v-model="searchFormData.taskName" placeholder="请输入测试项名称"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" icon="el-icon-search" size="small" @click="search()"></el-button>
+                    <el-button type="primary" icon="el-icon el-icon-search" size="small" @click="search()"></el-button>
                 </el-form-item>
             </el-form>
         </div>
