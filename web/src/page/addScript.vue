@@ -3,24 +3,31 @@
 </template>
 
 <script>
-    import Util from '~/lib/util';
+    import Util from '~/lib/util'; 
     export default {
         data() {
             return {
                 addScriptData: {
                     projectId: '',
-                    taskName: '',
-                    taskDesc: '',
+                    testName: '',
+                    testDesc: '',
                     hasParams: false,
-                    paramsList: [{}],
+                    paramsList: [{
+                        name: '',
+                        key: ''
+                    }],
                     filePath: ''
                 },
                 projectList: [{
-                    projectName: '项目1',
-                    id: '1'
+                    projectName: '亚欧新平台储值改版1',
+                    id: 1,
+                    text: '亚欧新平台储值改版1',
+                    value: '亚欧新平台储值改版1'
                 }, {
-                    projectName: '项目2',
-                    id: '2'
+                    projectName: '亚欧新平台储值改版2',
+                    id: 2,
+                    text: '亚欧新平台储值改版2',
+                    value: '亚欧新平台储值改版2'
                 }],
                 rules: {
                     project: [{
@@ -28,7 +35,7 @@
                         message: '请选择项目',
                         trigger: 'blur'
                     }],
-                    taskName: [{
+                    testName: [{
                         required: true,
                         message: '请输入测试项名称',
                         trigger: 'blur'
@@ -37,6 +44,7 @@
                 fileList: []
             }
         },
+        mounted() {},
         methods: {
             addParams() {
                 this.addScriptData.paramsList.push({
@@ -48,10 +56,20 @@
                 this.addScriptData.paramsList.splice(index, 1);
             },
             createScript() {
-                console.log(this.addScriptData.filePath);
-                let formData = Util.getFormData(this.addScriptData.filePath);
-                this.$http.post('/api/createScript', formData)
+                if (this.addScriptData.hasParams && this.addScriptData.paramsList.length !== 0) {
+                    this.addScriptData.params = JSON.stringify(this.addScriptData.paramsList);
+                }
+                this.$http.post('/api/createScript', this.addScriptData)
                     .then(function(response) {
+                        if (response.data.code === 0) {
+                            Util.dialog.show({
+                                msg: '上传成功'
+                            });
+                        } else {
+                            Util.dialog.show({
+                                msg: response.data.message
+                            });
+                        }
                         console.log(response);
                     })
                     .catch(function(error) {
@@ -60,10 +78,18 @@
             },
             getScriptFile(file) {
                 console.log(file);
-                this.addScriptData.filePath = file.raw;
+                // this.addScriptData.filePath = file.raw;
             },
-            handlePreview() {},
-            handleRemove() {},
+            getScriptFilePath(response, file, fileList) {
+                console.log(response);
+                this.addScriptData.filePath = response.data.pictureUrl;
+            },
+            uploadFileError(err, file, fileList) {
+                console.log(err);
+            },
+            handleRemove() {
+                this.addScriptData.filePath = '';
+            },
             beforeRemove() {},
             handleExceed() {},
         }

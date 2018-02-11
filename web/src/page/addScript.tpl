@@ -10,29 +10,28 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="测试项名称" prop="taskName">
-                <el-input v-model="addScriptData.taskName"></el-input>
+            <el-form-item label="测试项名称" prop="testName">
+                <el-input v-model="addScriptData.testName"></el-input>
             </el-form-item>
-            <el-form-item label="测试项具体过程描述" prop="taskDesc">
-                <el-input type="textarea" v-model="addScriptData.taskDesc"></el-input>
+            <el-form-item label="测试项具体过程描述" prop="testDesc">
+                <el-input type="textarea" v-model="addScriptData.testDesc"></el-input>
             </el-form-item>
             <el-form-item label="参数列表">
                 <el-switch v-model="addScriptData.hasParams"></el-switch>
             </el-form-item>
             <div class="param-list clearfix" v-if="addScriptData.hasParams" v-for="(item,index) in addScriptData.paramsList">
-                <el-form-item label="参数名称" prop="item.name">
+                <el-form-item label="参数名称">
                     <el-input v-model="item.name"></el-input>
                 </el-form-item>
-                <el-form-item label="参数key" prop="item.key">
+                <el-form-item label="参数key">
                     <el-input v-model="item.key"></el-input>
                 </el-form-item>
                 <i @click="addParams()" v-if="index === addScriptData.paramsList.length - 1" class="el-icon el-icon-circle-plus-outline"></i>
                 <i @click="delParams(index)" class="el-icon el-icon-circle-close"></i>
             </div>
             <el-form-item label="上传脚本文件" prop="scriptFile">
-                <el-upload class="upload-demo" :auto-upload="false" action="https://jsonplaceholder.typicode.com/posts/" 
-                :on-change="getScriptFile"
-                :on-preview="handlePreview" :on-remove="handleRemove" :on-exceed="handleExceed" :file-list="fileList">
+                <el-upload class="upload-demo" action="/api/uploadScript" :on-change="getScriptFile" name="filePath" :on-success="getScriptFilePath"
+                    :on-error="uploadFileError" :on-remove="handleRemove" :on-exceed="handleExceed" :file-list="fileList">
                     <el-button size="small" type="primary">点击上传</el-button>
                     <div slot="tip" class="el-upload__tip">只能上传js文件，且不超过500kb</div>
                 </el-upload>

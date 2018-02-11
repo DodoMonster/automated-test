@@ -4,7 +4,7 @@
             <span>用户管理</span>
         </div>
         <h1 class="page-title">敬请期待</h1>
-        <!-- <el-table stripe height="100%" :default-sort="{prop: 'lastRunTime', order: 'descending'}" :data="taskList" style="width: 100%">
+        <!-- <el-table stripe height="100%" :default-sort="{prop: 'lastRunTime', order: 'descending'}" :data="scriptList" style="width: 100%">
                 <el-table-column prop="projectName" label="项目" width="250">
                 </el-table-column>
                 <el-table-column prop="lastRunTime" label="上一次运行时间" width="200">

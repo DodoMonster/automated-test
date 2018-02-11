@@ -1,16 +1,19 @@
 'use strict';
 
 /*
- * Module dependencies.
+ * Module dependencies. 
  */
-const script = require('../app/controller/script');
+const script = require('../app/controller/script'),
+    testJob = require('../app/controller/testJob');
 
 module.exports = function (app) {
-    console.log('apppapppapppapppapppapppapppapppapppapppappp')
-    console.log(app);
-    console.log('apppapppapppapppapppapppapppapppapppapppappp')    
     app.post('/api/createScript', script.create);
-    // app.post('/api/login', script.login);
+    app.post('/api/uploadScript', script.upload);
+    app.get('/api/getScript', script.list);
+
+    app.post('/api/runJob', testJob.run); 
+
+
     // app.get('/api/script/:id', script.load);
 
     /**

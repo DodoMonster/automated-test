@@ -1,8 +1,7 @@
-// import {
-//     EventEmitter
-// } from 'events';
-// const Util = new EventEmitter();
-const Util = {};
+import {
+    EventEmitter
+} from 'events';
+const Util = new EventEmitter();
 
 // import md5 from 'blueimp-md5';
 
@@ -18,43 +17,31 @@ const Util = {};
  *          confirmBtnText:确定按钮文案(有默认值-确定，可不传) 
  * }
  */
-// Util.dialog = {
-//     show(data) {
-//         Util.removeAllListeners('confirm-dialog').removeAllListeners(
-//             'cancel-dialog');
-//         Util.emit('show-dialog', data);
-//         if (data.callback) {
-//             this.confirm(data.callback);
-//         }
-//         if (data.cancelCallback) {
-//             this.cancel(data.cancelCallback);
-//         }
-//         return this;
-//     },
-//     alert(data) {
-//         Util.removeAllListeners('confirm-dialog').removeAllListeners(
-//             'cancel-dialog');
-//         Util.emit('alert-dialog', data);
-//         if (data.callback) {
-//             this.confirm(data.callback);
-//         }
-//         if (data.cancelCallback) {
-//             this.cancel(data.cancelCallback);
-//         }
-//         return this;
-//     },
-//     hide() {
-//         Util.emit('hide-dialog');
-//     },
-//     confirm(fn) {
-//         Util.removeAllListeners('confirm-dialog');
-//         Util.on('confirm-dialog', fn);
-//     },
-//     cancel(fn) {
-//         Util.on('cancel-dialog', fn);
-//         return this;
-//     }
-// }
+Util.dialog = {
+    show(data) {
+        Util.removeAllListeners('confirm-dialog').removeAllListeners(
+            'cancel-dialog');
+        Util.emit('show-dialog', data);
+        if (data.callback) {
+            this.confirm(data.callback);
+        }
+        if (data.cancelCallback) {
+            this.cancel(data.cancelCallback);
+        }
+        return this;
+    },
+    hide() {
+        Util.emit('hide-dialog');
+    },
+    confirm(fn) {
+        Util.removeAllListeners('confirm-dialog');
+        Util.on('confirm-dialog', fn);
+    },
+    cancel(fn) {
+        Util.on('cancel-dialog', fn);
+        return this;
+    }
+}
 
 // Util.loading = {
 //     showLoad() {

@@ -10,6 +10,27 @@ var Router = require('koa-router');
 var router = new Router();
 const rest = require('./config/rest');
 
+const webpack = require('webpack');
+const convert = require('koa-convert');
+const koaWebpackMiddleware = require('koa-webpack-middleware');
+const webpackDevMiddleware = koaWebpackMiddleware.devMiddleware;
+const webpackHotMiddleware = koaWebpackMiddleware.hotMiddleware;
+const compiler = webpack(webpackDev);
+
+const wdm = webpackDevMiddleware(compiler, {
+    watchOptions: {
+        aggregateTimeout: 300,
+        poll: true
+    },
+    reload: true,
+    publicPath: webpackDev.output.publicPath,
+    stats: {
+        colors: true
+    }
+})
+app.use(convert(wdm));
+app.use(convert(webpackHotMiddleware(compiler)));
+
 app.use(bodyParser());
 app.use(rest.restify());
 app.use(router.routes()).use(router.allowedMethods());
@@ -39,5 +60,6 @@ app.use(middleware({
         }
     }
 }));
+
 
 app.listen(process.env.PORT || 3011);

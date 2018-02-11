@@ -33,17 +33,20 @@
                 </el-footer>
             </el-container>
         </el-container>
+        <alert-dialog></alert-dialog>
     </el-container>
 </template>
 
 <script>
     import pageHeader from '~component/header.vue';
+    import alertDialog from '~component/dialog.vue';
     export default {
         data() {
             return {}
         },
         components: {
-            pageHeader
+            pageHeader,
+            alertDialog
         },
         computed: {
             activeMenuIndex() {

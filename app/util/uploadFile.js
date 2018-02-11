@@ -26,8 +26,8 @@ function mkdirsSync(dirname) {
  * @return {string}          文件后缀名
  */
 function getSuffixName(fileName) {
-    let nameList = fileName.split('.')
-    return nameList[nameList.length - 1]
+    let nameList = fileName.split('.');
+    return nameList[nameList.length - 1];
 }
 
 /**
@@ -42,36 +42,39 @@ function uploadFile(ctx, options) {
     let busboy = new Busboy({
         headers: req.headers
     });
-
     // 获取类型
-    let fileType = options.fileType || 'common';
-    let filePath = path.join(options.path, fileType);
+    // let fileType = options.fileType || 'common';
+    // let filePath = path.join(options.path, fileType);
+    let filePath = options.path,
+        fileType;
     let mkdirResult = mkdirsSync(filePath);
-
+    console.log('-------------------- end 上传文件 ---------------------');
     return new Promise((resolve, reject) => {
         console.log('文件上传中...')
         let result = {
-            success: false,
             message: '',
-            data: null
+            data: null,
+            code: -1
         }
-
+        console.log(filePath);
         // 解析请求文件事件
         busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-            let fileName = Math.random().toString(16).substr(2) + '.' + getSuffixName(filename)
-            let _uploadFilePath = path.join(filePath, fileName)
-            let saveTo = path.join(_uploadFilePath)
+            let timestamp = +new Date();
+            let fileName = timestamp + '_' + Math.random().toString(16).substr(2) + '.' + getSuffixName(filename);
+            let _uploadFilePath = path.join(filePath, fileName);
+            let saveTo = path.join(_uploadFilePath);
 
             // 文件保存到制定路径
             file.pipe(fs.createWriteStream(saveTo))
 
             // 文件写入事件结束
             file.on('end', function () {
-                result.success = true
-                result.message = '文件上传成功'
+                result.message = '文件上传成功';
                 result.data = {
-                    pictureUrl: `//${ctx.host}/app/script/${fileType}/${fileName}`
+                    // pictureUrl: `//${ctx.host}/app/script/${fileType}/${fileName}`
+                    pictureUrl: `//${ctx.host}/app/uploads/scripts/${fileName}`
                 };
+                result.code = 0;
                 console.log('文件上传成功！');
                 resolve(result);
             });
@@ -79,13 +82,13 @@ function uploadFile(ctx, options) {
 
         // 解析结束事件
         busboy.on('finish', function () {
-            console.log('文件上结束');
+            console.log('文件上传结束');
             resolve(result);
         });
 
         // 解析错误事件
         busboy.on('error', function (err) {
-            console.log('文件上出错');
+            console.log('文件上传出错');
             reject(result);
         });
         req.pipe(busboy);

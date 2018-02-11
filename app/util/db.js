@@ -101,7 +101,7 @@ function defineModel(name, attributes) {
 }
 
 
-const TYPES = ['STRING', 'INTEGER', 'BIGINT', 'TEXT', 'DOUBLE', 'DATEONLY', 'BOOLEAN', 'VIRTUAL'];
+const TYPES = ['STRING', 'INTEGER', 'BIGINT', 'TEXT', 'DOUBLE', 'DATEONLY', 'BOOLEAN', 'VIRTUAL', 'DATE'];
 
 var exp = {
     defineModel: defineModel,
@@ -122,5 +122,6 @@ for (let type of TYPES) {
 }
 
 exp.ID = ID_TYPE;
+exp.NOW = Sequelize.NOW;
 
 module.exports = exp;

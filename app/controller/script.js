@@ -4,70 +4,70 @@
 'use strict';
 const Script = require('../model/Script'),
     ApiResult = require('../../config/rest').APIResult,
-    uploadFile = require('../util/uploadFile');
+    uploadFile = require('../util/uploadFile'),
+    path = require('path');
 
 /**
  *  Create Script 
  */
 exports.create = async (ctx, next) => {
     console.log('-------------------- start 创建脚本 ---------------------');
-    console.log(ctx.req);
-    console.log(next);
     console.log(ctx.request.body);
-    console.log('-------------------- end 创建脚本 ---------------------');
     let projectId = ctx.request.body.projectId,
-        taskName = ctx.request.body.taskName,
-        paramsList = ctx.request.body.paramsList;
-    if (!projectId || !taskName) {
+        testName = ctx.request.body.testName,
+        filePath = ctx.request.body.filePath,
+        testDesc = ctx.request.body.testDesc,
+        params = ctx.request.body.params;
+    if (!projectId || !testName) {
         ctx.rest(ApiResult("", -102, "参数为空"));
     } else {
-        // 上传文件请求处理
-        // let result = {
-        //     success: false
-        // }
-        let serverFilePath = path.join(__dirname, '../scripts')
-
-        // 上传文件事件
-        let result = await uploadFile(ctx, {
-            fileType: 'js',
-            path: serverFilePath
+        let result = await Script.create({
+            projectId: projectId,
+            testName: testName,
+            testDesc: testDesc,
+            filePath: filePath,
+            params: params
         });
         console.log(result);
-        // ctx.body = result
+        ctx.rest(ApiResult({}));
     }
-    // let Script = await Script.create({
-    //     mobile: mobile,
-    //     password: password,
-    //     provider: 'local'
-    // });
-    ctx.rest(ApiResult(result));
+    console.log('-------------------- end 创建脚本 ---------------------');
 };
 
-// exports.login = async(ctx, next) => {
-//     let mobile = ctx.request.body.mobile;
-//     let password = ctx.request.body.password;
-//     if (!mobile || !password) {
-//         ctx.rest(ApiResult("", -102, "手机号或密码不能为空"));
-//     } else {
-//         let Script = await Script.methods.load({mobile: mobile});
-//         if (Script) {
-//             if (Script.methods.authenticate(password, Script.salt, Script.hashed_password)) {
-//                 ctx.rest(ApiResult({
-//                     name: Script.name,
-//                     mobile: Script.mobile,
-//                     access_token: Script.access_token
-//                 }));
-//             } else {
-//                 ctx.rest(ApiResult("", -105, "用户密码错误"));
-//             }
-//         } else {
-//             ctx.rest(ApiResult("", -103, "用户不存在"));
-//         }
-//     }
-// };
 
 
-// exports.load = async(ctx, next) => {
-//     var u = await Script.findById(ctx.params.id);
-//     ctx.rest(ApiResult(u));
-// };
+exports.list = async (ctx, next) => {
+    console.log('-------------------- start 获取脚本列表 ---------------------');
+    console.log(ctx.rest);
+    let projectId = ctx.params.projectId,
+        testName = ctx.params.testName;
+
+    let condition = {};
+    if (projectId) {
+        condition.projectId = projectId;
+    }
+    if (testName) {
+        condition.testName = testName;
+    }
+    console.log(condition);
+    let result = await Script.findAll({
+        where: condition
+    });
+    console.log(result);
+    ctx.rest(ApiResult(result));
+    console.log('-------------------- end 获取脚本列表 ---------------------');
+};
+
+exports.upload = async (ctx, next) => {
+    console.log('-------------------- start 上传脚本 ---------------------');
+    let serverFilePath = path.join(__dirname, '../uploads/scripts')
+    console.log(serverFilePath);
+    // 上传文件事件
+    let result = await uploadFile(ctx, {
+        fileType: 'js',
+        path: serverFilePath
+    });
+    console.log(result);
+    ctx.rest(ApiResult(result.data, result.code, result.message));
+    console.log('-------------------- end 上传脚本 ---------------------');
+};

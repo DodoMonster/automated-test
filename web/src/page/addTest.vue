@@ -3,9 +3,9 @@
 </template>
 
 <script>
+    import Util from '~/lib/util';
     export default {
-        components: {
-        },
+        components: {},
         data() {
             return {
                 projectList: [{
@@ -19,48 +19,38 @@
                     text: '亚欧新平台储值改版2',
                     value: '亚欧新平台储值改版2'
                 }],
-                taskList: [{
-                    id: '1',
-                    projectName: '亚欧新平台储值改版1',
-                    lastRunTime: '1518069233270',
-                    taskName: "测试登录",
-                    taskDesc: "从首页点击登录按钮，跳转到登录页面，输入用户名、密码点击登录按钮"
-                }, {
-                    id: '2',
-                    projectName: '亚欧新平台储值改版2',
-                    lastRunTime: '15180692333333',
-                    taskName: "测试注册",
-                    taskDesc: "从首页点击登录按钮，跳转到登录页面，输入用户名、密码点击登录按钮"
-                }],
-                projectId: '',
+                scriptList: [],
                 resultList: [],
                 resultDialogShow: false,
                 addParamsDialogShow: false,
-                paramsObject: [{
-                    name: '账号名',
-                    key: 'username',
-                    value: ''
-                }, {
-                    name: '密码',
-                    key: 'password',
-                    value: ''
-                }],
+                paramsObject: [],
                 paramsFromData: {},
                 paramsList: [],
-                searchFormData: {},
-                page:{
-                    totalPage:1,
-                    currentPage:1,
-                    pageSize:10
+                searchFormData: {
+                    projectId: '',
+                    testName: ''
+                },
+                runParams: {},
+                page: {
+                    totalPage: 1,
+                    currentPage: 1,
+                    pageSize: 10
                 }
             }
         },
         mounted() {
-            this.addParams();
+            this.getScriptList();
         },
         methods: {
             showResult() {
                 this.resultDialogShow = true;
+            },
+            getScriptList() {
+                this.$http.get('/api/getScript', this.searchFormData).then((response) => {
+                    this.scriptList = response.data.data;
+                }).catch((err) => {
+                    console.log(err);
+                });
             },
             filterHandler(value, row, column) {
                 const property = column['property'];
@@ -70,14 +60,56 @@
                 return row.projectName === value;
             },
             addParams() {
-                this.paramsList.push(this.paramsObject);
+                this.paramsList.push(JSON.parse(JSON.stringify(this.paramsObject)));
             },
             delParams(index) {
                 this.paramsList.splice(index, 1);
             },
-            handleSizeChange(){},
-            handleCurrentChange(){},
-            startRun(){},
+            showRun(item) {
+                this.runParams = item;
+                this.paramsObject = [];
+                if (item.params) {
+                    try {
+                        this.paramsObject = JSON.parse(item.params);
+                        var newObj = {};
+                        if (this.paramsObject.length) {
+                            this.addParamsDialogShow = true;
+                            this.paramsList = [JSON.parse(JSON.stringify(this.paramsObject))];
+                        }
+                    } catch (e) {}
+                } else {
+                    this.startRun(item);
+                }
+            },
+            startRun(flag) {
+                if (flag) {
+                    let prams = [];
+                    this.paramsList.forEach((item, index) => {
+                        var paramsObj = {};
+                        item.forEach((val, key) => {
+                            paramsObj[val.key] = val.value;
+                        })
+                        prams.push(paramsObj);
+                    });
+                    this.runParams.paramsList = prams;
+                }
+                this.$http.post('/api/runJob', this.runParams).then((response) => {
+                    console.log(response);
+                    if (response.data.code === 0) {
+                        Util.dialog.show({
+                            msg: '运行成功~请稍候再查看结果！' 
+                        });
+                    } else {
+                        Util.dialog.show({
+                            msg: response.data.message
+                        });
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                });
+            },
+            handleSizeChange() {},
+            handleCurrentChange() {},
             search() {}
         }
     }
@@ -88,8 +120,8 @@
         float: right;
         height: 38px;
     }
-    .el-pagination{
-        margin:20px auto;
+    .el-pagination {
+        margin: 20px auto;
     }
 </style>
 
