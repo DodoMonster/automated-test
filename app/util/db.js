@@ -6,7 +6,7 @@ const Config = require('../../config/dbConfig.js')[node_env];
 const moment = require('moment');
 console.log('--------------------- start 数据库Config -------------------------');
 console.log(Config);
-console.log('--------------------- start 数据库Config -------------------------');
+console.log('--------------------- end 数据库Config -------------------------');
 
 var sequelize = new Sequelize(Config.database, Config.username, Config.password, Config.option);
 
@@ -47,50 +47,11 @@ function defineModel(name, attributes) {
             return moment.utc(this.getDataValue('updateTime')).utcOffset(+8).format('YYYY-MM-DD HH:mm:ss')
         }
     };
-    // attrs.deleted = {
-    //     type: Sequelize.BOOLEAN,
-    //     allowNull: false,
-    //     defaultValue: 'false'
-    // };
     attrs.deleted = {
         type: Sequelize.ENUM(0, 1),
         allowNull: false,
         defaultValue: 0
     };
-    // attrs.updated_at = {
-    //     type: Sequelize.BIGINT,
-    //     allowNull: false
-    // };
-    // attrs.version = {
-    //     type: Sequelize.BIGINT,
-    //     allowNull: false
-    // };
-    // attrs.status = {
-    //     type: Sequelize.BIGINT,
-    //     allowNull: false
-    // };
-    // console.log('model defined for table: ' + name + '\n' + JSON.stringify(attrs, function (k, v) {
-    //     if (k === 'type') {
-    //         for (let key in Sequelize) {
-    //             if (key === 'ABSTRACT' || key === 'NUMBER') {
-    //                 continue;
-    //             }
-    //             let dbType = Sequelize[key];
-    //             if (typeof dbType === 'function') {
-    //                 if (v instanceof dbType) {
-    //                     if (v._length) {
-    //                         return `${dbType.key}(${v._length})`;
-    //                     }
-    //                     return dbType.key;
-    //                 }
-    //                 if (v === dbType) {
-    //                     return dbType.key;
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     return v;
-    // }, '  '));
     return sequelize.define(name, attrs, {
         tableName: name,
         timestamps: false,
@@ -99,18 +60,20 @@ function defineModel(name, attributes) {
         hooks: {
             beforeValidate: function (obj) {
                 let now = Date.now();
-                if (obj.isNewRecord) {
-                    console.log('will create entity...' + obj);
-                    obj.createdTime = now;
-                    obj.updatedTime = now;
-                    obj.version = 0;
-                    obj.status = 0;
-                    obj.deleted = 0;
-                } else {
-                    console.log('will update entity...');
-                    obj.updated_at = now;
-                    obj.version++;
-                }
+                console.log(obj);
+                obj.updatedTime = now;
+                // if (obj.isNewRecord) {
+                //     console.log('will create entity...');
+                //     obj.createdTime = now;
+                //     obj.updatedTime = now;
+                //     // obj.version = 0;
+                //     // obj.status = 0;
+                //     // obj.deleted = 0;
+                // } else {
+                //     console.log('will update entity...');
+                //     obj.updatedTime = now;
+                //     // obj.version++;
+                // }
             }
         }
     });

@@ -14,11 +14,11 @@
                         <i class="el-icon-tickets"></i>
                         <span>项目管理</span>
                     </el-menu-item>
-                    <el-menu-item index="/addScript">
+                    <el-menu-item index="/scriptAdmin">
                         <i class="el-icon-printer"></i>
-                        <span>创建测试脚本</span>
+                        <span>测试脚本管理</span>
                     </el-menu-item>
-                    <el-menu-item index="/addTest">
+                    <el-menu-item index="/taskAdmin">
                         <i class="el-icon-date"></i>
                         <span>测试任务管理</span>
                     </el-menu-item>
@@ -50,8 +50,7 @@
         },
         computed: {
             activeMenuIndex() {
-                return '/' + this.$route.matched[0].path.split('/')[1];
-                s
+                return '/' + this.$route.path.split('/')[1];
             }
         },
         mounted() {},

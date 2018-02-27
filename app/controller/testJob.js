@@ -3,9 +3,15 @@
  */
 'use strict';
 const TestJob = require('../model/TestJob'),
+    Script = require('../model/Script'),
     ApiResult = require('../../config/rest').APIResult,
     path = require('path');
 
+/**
+ * run 运行脚本接口
+ * @param {*} ctx 
+ * @param {*} next 
+ */
 exports.run = async (ctx, next) => {
     console.log('-------------------- start 运行测试脚本 ---------------------');
     console.log(ctx.request.body);
@@ -17,19 +23,7 @@ exports.run = async (ctx, next) => {
     } else {
         try {
             let scriptFile = require('../uploads/scripts/' + filePath);
-            // if (paramsList && paramsList.length) {
-            // (async () => {
-            //     for (const item of paramsList) {
-            //         console.log(item);
-            //         await scriptFile.startJob(ctx.request.body, item);
-            //     }
-            // })();
-            //     paramsList.forEach((item) => {
-            //         scriptFile.startJob(ctx.request.body, item);
-            //     });
-            // } else {
             scriptFile.startJob(ctx.request.body, paramsList);
-            // }
         } catch (e) {
             console.log(e);
         }
@@ -37,15 +31,42 @@ exports.run = async (ctx, next) => {
     }
     console.log('-------------------- end 运行测试脚本 ---------------------');
 };
+
 /**
- * 
- *  
+ * delete 删除测试结果接口
+ * @param {*} ctx 
+ * @param {*} next 
+ */
+exports.delete = async (ctx, next) => {
+    console.log('-------------------- start 删除测试结果 ---------------------');
+    let id = ctx.request.body.id;
+    if (!id) {
+        ctx.rest(ApiResult("", -102, "参数为空"));
+    } else {
+        try {
+            let result = TestJob.update({
+                deleted: 1
+            }, {
+                where: { 
+                    id: id
+                }
+            });
+            console.log(result);
+        } catch (e) {
+            console.log(e);
+        }
+        ctx.rest(ApiResult({}));
+    }
+    console.log('-------------------- end 删除测试结果 ---------------------');
+};
+
+/**
+ * list 获取脚本运行结果
  * @param {any} ctx 
  * @param {any} next 
  */
 exports.list = async (ctx, next) => {
     console.log('-------------------- start 获取运行任务结果 ---------------------');
-    console.log(ctx.query);
     console.log(ctx.request.query);
     let scriptId = ctx.query.scriptId;
     if (!scriptId) {
@@ -58,8 +79,11 @@ exports.list = async (ctx, next) => {
             };
             condition.scriptId = scriptId;
             result = await TestJob.findAll({
-                where: condition
-            }); 
+                where: condition,
+                order: [
+                    ["updateTime", "DESC"]
+                ]
+            });
             console.log(result);
         } catch (e) {
             console.log(e);
@@ -69,18 +93,36 @@ exports.list = async (ctx, next) => {
     console.log('-------------------- end 获取运行任务结果 ---------------------');
 };
 
-exports.save = async (params, originParams, testParams) => {
+/**
+ * save 保存运行结果
+ * @param {*} testResult 测试结果，含截图imgList,日志txtLog
+ * @param {*} originParams 点击运行发起运行接口请求的前端的请求参数
+ * @param {*} testParams 用户输入的测试用例参数
+ */
+exports.save = async (testResult, originParams, testParams) => {
     console.log('-------------------- start 保存运行结果 ---------------------');
-    console.log(params);
+    console.log(testResult);
     console.log(originParams);
     try {
         let result = await TestJob.create({
             scriptId: originParams.id,
-            resultImg: params.imgList.join(','),
-            resultLog: params.txtLog,
+            resultImg: testResult ? testResult.imgList.join(',') : null,
+            resultLog: testResult.txtLog,
             params: JSON.stringify(testParams)
         });
         console.log(result);
+
+        // 更新脚本运行的最后一次结果
+        let lastRunTime = new Date();
+        Script.update({
+            lastRunTime: lastRunTime
+        }, {
+            where: {
+                id: originParams.id
+            }
+        }).then(function (res) {
+            console.log(res);
+        });
     } catch (e) {
         console.log(e);
     }

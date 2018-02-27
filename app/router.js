@@ -10,9 +10,11 @@ module.exports = function (app) {
     app.post('/api/createScript', script.create);
     app.post('/api/uploadScript', script.upload);
     app.get('/api/getScript', script.list);
-
+    app.post('/api/deleteScript', script.delete);     
+    
     app.post('/api/runJob', testJob.run); 
     app.get('/api/getResult', testJob.list);
+    app.post('/api/deleteResult', testJob.delete);     
     
 
     // app.get('/api/script/:id', script.load);

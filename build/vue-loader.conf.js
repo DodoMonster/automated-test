@@ -1,10 +1,6 @@
 'use strict'
 const utils = require('./utils')
 const config = require('../config')
-console.log('configconfigconfigconfigconfigconfigconfigconfigconfigconfigconfigconfigconfigconfigconfig')
-console.log(config)
-console.log('configconfigconfigconfigconfigconfigconfigconfigconfigconfigconfigconfigconfigconfigconfig')
-
 
 const isProduction = process.env.NODE_ENV === 'production'
 const sourceMapEnabled = isProduction ?

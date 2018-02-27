@@ -8,7 +8,9 @@ const Script = require('../model/Script'),
     path = require('path');
 
 /**
- *  Create Script  
+ * 创建测试脚本
+ * @param {*} ctx 
+ * @param {*} next 
  */
 exports.create = async (ctx, next) => {
     console.log('-------------------- start 创建脚本 ---------------------');
@@ -35,14 +37,19 @@ exports.create = async (ctx, next) => {
 };
 
 
-
+/**
+ * 获取脚本文件
+ * @param {*} ctx 
+ * @param {*} next 
+ */
 exports.list = async (ctx, next) => {
     console.log('-------------------- start 获取脚本列表 ---------------------');
-    console.log(ctx.rest);
     let projectId = ctx.params.projectId,
         testName = ctx.params.testName;
 
-    let condition = {};
+    let condition = {
+        deleted: 0
+    };
     if (projectId) {
         condition.projectId = projectId;
     }
@@ -51,13 +58,21 @@ exports.list = async (ctx, next) => {
     }
     console.log(condition);
     let result = await Script.findAll({
-        where: condition
+        where: condition,
+        order: [
+            ["updateTime", "DESC"]
+        ]
     });
     console.log(result);
     ctx.rest(ApiResult(result));
     console.log('-------------------- end 获取脚本列表 ---------------------');
 };
 
+/**
+ * 上传脚本文件
+ * @param {*} ctx 
+ * @param {*} next 
+ */
 exports.upload = async (ctx, next) => {
     console.log('-------------------- start 上传脚本 ---------------------');
     let serverFilePath = path.join(__dirname, '../uploads/scripts')
@@ -70,4 +85,32 @@ exports.upload = async (ctx, next) => {
     console.log(result);
     ctx.rest(ApiResult(result.data, result.code, result.message));
     console.log('-------------------- end 上传脚本 ---------------------');
+};
+
+/**
+ * 删除脚本文件
+ * @param {*} ctx 
+ * @param {*} next 
+ */
+exports.delete = async (ctx, next) => {
+    console.log('-------------------- start 删除脚本文件 ---------------------');
+    let id = ctx.request.body.id;
+    if (!id) {
+        ctx.rest(ApiResult("", -102, "参数为空"));
+    } else {
+        try {
+            let result = Script.update({
+                deleted: 1
+            }, {
+                where: {
+                    id: id
+                }
+            });
+            console.log(result);
+        } catch (e) {
+            console.log(e);
+        }
+        ctx.rest(ApiResult({}));
+    }
+    console.log('-------------------- end 删除脚本文件 ---------------------');
 };

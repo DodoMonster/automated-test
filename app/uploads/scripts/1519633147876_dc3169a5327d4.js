@@ -16,6 +16,11 @@ function startJob(allParams, paramsList) {
             timeStamp = +new Date();
         if (paramsList && paramsList.length) {
             for (const params of paramsList) {
+                result = {
+                        imgList: [],
+                        txtLog: ''
+                    },
+                    timeStamp = +new Date();
                 const browser = await puppeteer.launch(),
                     page = await browser.newPage();
                 try {

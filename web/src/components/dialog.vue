@@ -2,8 +2,8 @@
     <el-dialog title="提示" :visible.sync="isShow" width="30%" show-close center>
         <span>{{dialogInfo.msg}}</span>
         <span slot="footer" class="dialog-footer" v-if="dialogInfo.showBtn">
-            <el-button @click="isShow = false">取 消</el-button>
-            <el-button type="primary" @click="isShow = false">确 定</el-button>
+            <el-button @click="cancel()">取 消</el-button>
+            <el-button type="primary" @click="confirm()">确 定</el-button>
         </span>
     </el-dialog>
 </template>
@@ -15,7 +15,7 @@
             return {
                 dialogInfo: {
                     msg: '',
-                    showBtn:false
+                    showBtn: false
                 },
                 isShow: false
             }
@@ -26,7 +26,6 @@
                 this.dialogInfo = data;
             });
             Util.on('hide-dialog', (data) => {
-                console.log(data);
                 this.isShow = false;
             });
         },
