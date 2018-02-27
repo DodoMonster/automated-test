@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 console.log('init sequelize...');
 const node_env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const Config = require('../../config/dbConfig.js')[node_env];
-
+const moment = require('moment');
 console.log('--------------------- start 数据库Config -------------------------');
 console.log(Config);
 console.log('--------------------- start 数据库Config -------------------------');
@@ -34,12 +34,28 @@ function defineModel(name, attributes) {
     attrs.createdTime = {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.NOW,
+        get: function () {
+            return moment.utc(this.getDataValue('createdTime')).utcOffset(+8).format('YYYY-MM-DD HH:mm:ss')
+        }
     };
-    attrs.deleted = {
-        type: Sequelize.BOOLEAN,
+    attrs.updateTime = {
+        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: 'false'
+        defaultValue: Sequelize.NOW,
+        get: function () {
+            return moment.utc(this.getDataValue('updateTime')).utcOffset(+8).format('YYYY-MM-DD HH:mm:ss')
+        }
+    };
+    // attrs.deleted = {
+    //     type: Sequelize.BOOLEAN,
+    //     allowNull: false,
+    //     defaultValue: 'false'
+    // };
+    attrs.deleted = {
+        type: Sequelize.ENUM(0, 1),
+        allowNull: false,
+        defaultValue: 0
     };
     // attrs.updated_at = {
     //     type: Sequelize.BIGINT,
@@ -85,8 +101,8 @@ function defineModel(name, attributes) {
                 let now = Date.now();
                 if (obj.isNewRecord) {
                     console.log('will create entity...' + obj);
-                    obj.created_at = now;
-                    obj.updated_at = now;
+                    obj.createdTime = now;
+                    obj.updatedTime = now;
                     obj.version = 0;
                     obj.status = 0;
                     obj.deleted = 0;

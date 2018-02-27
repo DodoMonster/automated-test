@@ -72,7 +72,7 @@ function uploadFile(ctx, options) {
                 result.message = '文件上传成功';
                 result.data = {
                     // pictureUrl: `//${ctx.host}/app/script/${fileType}/${fileName}`
-                    pictureUrl: `//${ctx.host}/app/uploads/scripts/${fileName}`
+                    pictureUrl: `${fileName}`
                 };
                 result.code = 0;
                 console.log('文件上传成功！');

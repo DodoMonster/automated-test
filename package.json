@@ -6,7 +6,6 @@
   "scripts": {
     "test": "npm run test",
     "start": "node ./index.js",
-    
     "build": "node build/build.js"
   },
   "repository": {
@@ -30,11 +29,14 @@
     "koa-bodyparser": "^3.2.0",
     "koa-onerror": "^4.0.0",
     "koa-router": "^7.4.0",
+    "koa-static": "^4.0.2",
+    "moment": "^2.20.1",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.2",
     "puppeteer": "^1.0.0",
     "sequelize": "^4.33.0",
     "vue": "^2.5.13",
+    "vue-awesome-swiper": "^3.1.2",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

@@ -10,6 +10,10 @@ var Router = require('koa-router');
 var router = new Router();
 const rest = require('./config/rest');
 
+const staticSer = require('koa-static');
+
+app.use(staticSer(join(__dirname + '/app/uploads')));
+
 const webpack = require('webpack');
 const convert = require('koa-convert');
 const koaWebpackMiddleware = require('koa-webpack-middleware');
@@ -31,11 +35,7 @@ const wdm = webpackDevMiddleware(compiler, {
 app.use(convert(wdm));
 app.use(convert(webpackHotMiddleware(compiler)));
 
-app.use(bodyParser());
-app.use(rest.restify());
-app.use(router.routes()).use(router.allowedMethods());
 
-require('./app/router.js')(router);
 
 // fs.readdirSync(model)
 //     .filter(file => ~file.search(/^[^\.].*\.js$/))
@@ -46,6 +46,23 @@ onerror(app);
 
 //控制台打印请求信息
 app.use(async (ctx, next) => {
+    let url = ctx.url
+    // 从上下文的request对象中获取
+    let request = ctx.request
+    let req_query = request.query
+    let req_querystring = request.querystring
+
+    // 从上下文中直接获取
+    let ctx_query = ctx.query
+    let ctx_querystring = ctx.querystring
+
+    ctx.body = {
+        url,
+        req_query,
+        req_querystring,
+        ctx_query,
+        ctx_querystring
+    }
     const start = Date.now();
     await next();
     const ms = Date.now() - start;
@@ -61,5 +78,10 @@ app.use(middleware({
     }
 }));
 
+app.use(bodyParser());
+app.use(rest.restify());
+app.use(router.routes()).use(router.allowedMethods());
+
+require('./app/router.js')(router);
 
 app.listen(process.env.PORT || 3011);

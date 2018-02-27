@@ -12,7 +12,8 @@ module.exports = function (app) {
     app.get('/api/getScript', script.list);
 
     app.post('/api/runJob', testJob.run); 
-
+    app.get('/api/getResult', testJob.list);
+    
 
     // app.get('/api/script/:id', script.load);
 

@@ -20,7 +20,7 @@
             :data="scriptList" style="width: 100%">
             <el-table-column prop="projectId" label="项目" width="250" :filters="projectList" filter-placement="bottom-end" :filter-method="filterProject">
             </el-table-column>
-            <el-table-column prop="lastRunTime" sortable label="上一次运行时间" width="200">
+            <el-table-column prop="updateTime" sortable label="上一次运行时间" width="200">
             </el-table-column>
             <el-table-column prop="testName" label="测试项名称" width="300">
             </el-table-column>
@@ -44,7 +44,7 @@
         </el-pagination>
     </el-card>
     <el-dialog title="添加参数" :visible.sync="addParamsDialogShow">
-        <el-form ref="paramsFrom" :inline="true" class="demo-form-inline width-100" :model="paramsFromData" label-width="120px">
+        <el-form ref="paramsFrom" :inline="true" class="demo-form-inline width-100" :model="paramsFromData" label-width="100px">
             <div v-for="(params,index) in paramsList" :key="index">
                 <el-form-item v-for="(item,i) in params" :key="i" :label="item.name">
                     <el-input v-model="item.value"></el-input>
@@ -60,11 +60,33 @@
             </el-form-item>
         </el-form>
     </el-dialog>
-    <el-dialog title="测试项名称" :visible.sync="resultDialogShow">
+    <el-dialog title="测试项名称" width="80%" :visible.sync="resultDialogShow">
         <el-table :data="resultList">
-            <el-table-column property="runTime" label="运行日期" width="150"></el-table-column>
+            <el-table-column property="createdTime" label="运行日期" width="200"></el-table-column>
             <el-table-column property="result" label="运行结果" width="200"></el-table-column>
-            <el-table-column property="detail" label="测试结果详情"></el-table-column>
+            <el-table-column property="params" label="参数"></el-table-column>
+            <el-table-column label="测试结果日志">
+                <template slot-scope="scope">
+                    <div v-html="scope.row.resultLog"></div>
+                </template>
+            </el-table-column>
+            <el-table-column property="resultImg" label="查看截图" width="120" style="text-align:center">
+                <template slot-scope="scope">
+                    <el-button v-if="scope.row.resultImg" @click="showResultImg(scope.row)" icon="el-icon-zoom-in" type="success" size="small"></el-button>
+                    <p v-else>测试结果无截图</p>
+                    <el-button size="small" type="danger">
+                        <i class="el-icon-delete"></i>
+                    </el-button>
+                </template>
+            </el-table-column>
         </el-table>
+    </el-dialog>
+    <el-dialog :visible.sync="resultImgDialogShow">
+        <swiper :options="swiperOption">
+            <swiper-slide v-for="(slide,index) in resultImg" :key="index">
+                <img :src="'results/' + slide" alt="">
+            </swiper-slide>
+            <div class="swiper-pagination" slot="pagination"></div>
+        </swiper>
     </el-dialog>
 </div>

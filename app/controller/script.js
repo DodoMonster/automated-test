@@ -8,7 +8,7 @@ const Script = require('../model/Script'),
     path = require('path');
 
 /**
- *  Create Script 
+ *  Create Script  
  */
 exports.create = async (ctx, next) => {
     console.log('-------------------- start 创建脚本 ---------------------');

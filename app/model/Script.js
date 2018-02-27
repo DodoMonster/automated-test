@@ -13,8 +13,14 @@ const Script = db.defineModel('Script', {
         type: db.STRING(),
         unique: true
     },
-    testDesc: db.STRING(500),
-    params:db.STRING(500)
+    testDesc: {
+        type: db.STRING(500),
+        allowNull: true
+    },
+    params: {
+        type: db.STRING(500),
+        allowNull: true
+    }
 });
 
 // Script.beforeValidate(function (Script) {
