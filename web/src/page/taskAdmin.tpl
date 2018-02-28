@@ -12,7 +12,7 @@
                     <el-input v-model="searchFormData.testName" placeholder="请输入测试项名称"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" icon="el-icon el-icon-search" size="small" @click="search()"></el-button>
+                    <el-button type="primary" icon="el-icon el-icon-search" size="small" @click="getScriptList()"></el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -45,7 +45,7 @@
             </el-table-column>
         </el-table>
         <el-pagination class="text-center" background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="page.currentPage"
-            :page-sizes="[10, 20, 30, 40]" :page-size="page.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="page.totalPage">
+            :page-sizes="[1, 10, 20, 30, 40]" :page-size="page.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="page.totalPage">
         </el-pagination>
     </el-card>
     <el-dialog title="添加参数" :visible.sync="addParamsDialogShow">

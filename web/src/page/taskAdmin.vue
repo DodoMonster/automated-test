@@ -1,4 +1,6 @@
-<template src="./taskAdmin.tpl"></template>
+<template src="./taskAdmin.tpl">
+
+</template>
 
 <script>
     import Util from '~/lib/util';
@@ -41,9 +43,10 @@
                 },
                 runParams: {},
                 page: {
-                    totalPage: 1,
+                    totalPage: 0,
                     currentPage: 1,
-                    pageSize: 10
+                    pageSize: 1,
+                    total: 0
                 },
                 resultImgDialogShow: false,
                 resultImg: [],
@@ -60,9 +63,10 @@
         methods: {
             getScriptList() {
                 this.$http.get('/api/getScript', {
-                    params: this.searchFormData
+                    params: Object.assign(this.page, this.searchFormData)
                 }).then((response) => {
-                    this.scriptList = response.data.data;
+                    this.scriptList = response.data.data.rows || [];
+                    this.page.totalPage = Math.ceil(response.data.data.count / this.page.pageSize) || 0;
                 }).catch((err) => {
                     console.log(err);
                 });
@@ -223,9 +227,16 @@
                     console.log(err);
                 });
             },
-            handleSizeChange() {},
-            handleCurrentChange() {},
-            search() {}
+            // 分页的每页条数改变时
+            handleSizeChange(size) {
+                console.log(size);
+                this.page.pageSize = size;
+                this.getScriptList();
+            },
+            handleCurrentChange(page) {
+                this.page.currentPage = page;
+                this.getScriptList();
+            }
         }
     }
 </script>

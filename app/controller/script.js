@@ -44,9 +44,11 @@ exports.create = async (ctx, next) => {
  */
 exports.list = async (ctx, next) => {
     console.log('-------------------- start 获取脚本列表 ---------------------');
-    let projectId = ctx.params.projectId,
-        testName = ctx.params.testName;
-
+    let projectId = ctx.query.projectId,
+        testName = ctx.query.testName,
+        pageSize = Number(ctx.query.pageSize) || 10,
+        currentPage = Number(ctx.query.currentPage) - 1 || 0;
+    console.log(ctx.query);
     let condition = {
         deleted: 0
     };
@@ -54,14 +56,17 @@ exports.list = async (ctx, next) => {
         condition.projectId = projectId;
     }
     if (testName) {
-        condition.testName = testName;
+        condition.testName = {
+            $like: testName + '%'
+        };
     }
-    console.log(condition);
-    let result = await Script.findAll({
+    let result = await Script.findAndCountAll({
         where: condition,
         order: [
             ["updateTime", "DESC"]
-        ]
+        ],
+        limit: pageSize,
+        offset: currentPage * pageSize
     });
     console.log(result);
     ctx.rest(ApiResult(result));
