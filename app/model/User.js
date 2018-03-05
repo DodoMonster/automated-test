@@ -4,35 +4,22 @@
 const db = require('../util/db');
 const crypto = require('crypto');
 // const uuid = require('node-uuid');
-const User = {};
-// const User = db.defineModel('users', {
-//     name: {
-//         type: db.STRING(), 
-//         allowNull: true
-//     },
-//     email: {
-//         type: db.STRING(),
-//         unique: true,
-//         allowNull: true
-//     },
-//     password: db.VIRTUAL(),
-//     mobile: {
-//         type: db.STRING(),
-//         unique: true
-//     },
-//     provider: db.STRING(),
-//     hashed_password: db.STRING(),
-//     salt: db.STRING(),
-//     auth_token: {
-//         type: db.STRING(),
-//         allowNull: true
-//     },
-//     access_token: {
-//         type: db.STRING(),
-//         allowNull: true
-//     }
+const User = db.defineModel('user', {
+    username: {
+        type: db.STRING(), 
+        allowNull: false
+    },
+    password: db.VIRTUAL(),
 
-// });
+    // auth_token: {
+    //     type: db.STRING(),
+    //     allowNull: true
+    // },
+    // access_token: {
+    //     type: db.STRING(),
+    //     allowNull: true
+    // }
+});
 
 // User.beforeValidate(function (user) {
 //     if (user.isNewRecord) {

@@ -62,7 +62,7 @@
         },
         methods: {
             getScriptList() {
-                this.$http.get('/api/getScript', {
+                this.$http.get('/api/script/getScript', {
                     params: Object.assign(this.page, this.searchFormData)
                 }).then((response) => {
                     this.scriptList = response.data.data.rows || [];
@@ -74,7 +74,7 @@
             // 查看测试结果
             getResult(data) {
                 this.resultDialog.title = data.testName;
-                this.$http.get('/api/getResult', {
+                this.$http.get('/api/task/getResult', {
                     params: {
                         scriptId: data.id
                     }
@@ -154,7 +154,7 @@
                 if (isFalse) {
                     return;
                 }
-                this.$http.post('/api/runJob', this.runParams).then((response) => {
+                this.$http.post('/api/task/runJob', this.runParams).then((response) => {
                     if (response.data.code === 0) {
                         Util.dialog.show({
                             msg: '运行成功~请稍候再查看结果！'
@@ -181,7 +181,7 @@
             },
             // 删除测试任务结果
             deleteTestResult(data) {
-                this.$http.post('/api/deleteResult', {
+                this.$http.post('/api/task/deleteResult', {
                     id: data.row.id
                 }).then((response) => {
                     if (response.data.code === 0) {
@@ -210,7 +210,7 @@
             },
             // 删除测试任务结果
             deleteTestScript(data) {
-                this.$http.post('/api/deleteScript', {
+                this.$http.post('/api/script/deleteScript', {
                     id: data.row.id
                 }).then((response) => {
                     if (response.data.code === 0) {

@@ -2,7 +2,7 @@
  * Created by vslimit on 2017/9/12.
  */
 'use strict';
-const TestJob = require('../model/TestJob'),
+const Task = require('../model/Task'),
     Script = require('../model/Script'),
     ApiResult = require('../../config/rest').APIResult,
     path = require('path');
@@ -44,7 +44,7 @@ exports.delete = async (ctx, next) => {
         ctx.rest(ApiResult("", -102, "参数为空"));
     } else {
         try {
-            let result = TestJob.update({
+            let result = Task.update({
                 deleted: 1
             }, {
                 where: { 
@@ -78,7 +78,7 @@ exports.list = async (ctx, next) => {
                 deleted: 0
             };
             condition.scriptId = scriptId;
-            result = await TestJob.findAll({
+            result = await Task.findAll({
                 where: condition,
                 order: [
                     ["updateTime", "DESC"]
@@ -104,7 +104,7 @@ exports.save = async (testResult, originParams, testParams) => {
     console.log(testResult);
     console.log(originParams);
     try {
-        let result = await TestJob.create({
+        let result = await Task.create({
             scriptId: originParams.id,
             resultImg: testResult ? testResult.imgList.join(',') : null,
             resultLog: testResult.txtLog,

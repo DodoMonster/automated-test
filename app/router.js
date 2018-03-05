@@ -3,19 +3,30 @@
 /*
  * Module dependencies. 
  */
-const script = require('../app/controller/script'),
-    testJob = require('../app/controller/testJob');
+const user = require('../app/controller/user'),
+    project = require('../app/controller/project'),
+    script = require('../app/controller/script'),
+    task = require('../app/controller/task');
 
 module.exports = function (app) {
-    app.post('/api/createScript', script.create);
-    app.post('/api/uploadScript', script.upload);
-    app.get('/api/getScript', script.list);
-    app.post('/api/deleteScript', script.delete);     
-    
-    app.post('/api/runJob', testJob.run); 
-    app.get('/api/getResult', testJob.list);
-    app.post('/api/deleteResult', testJob.delete);     
-    
+    app.get('/api/user/getUserList', user.list);
+    app.post('/api/user/createUser', user.create);
+    app.post('/api/user/deleteUser', user.delete);
+
+    app.get('/api/project/getProjectList', project.list);
+    app.post('/api/project/createProject', project.create);
+    app.post('/api/project/editProject', project.edit);    
+    app.post('/api/project/deleteProject', project.delete);
+
+    app.post('/api/script/createScript', script.create);
+    app.post('/api/script/uploadScript', script.upload);
+    app.get('/api/script/getScript', script.list);
+    app.post('/api/script/deleteScript', script.delete);
+    app.post('/api/script/editScript', script.edit);
+
+    app.post('/api/task/runJob', task.run);
+    app.get('/api/task/getResult', task.list);
+    app.post('/api/task/deleteResult', task.delete);
 
     // app.get('/api/script/:id', script.load);
 
