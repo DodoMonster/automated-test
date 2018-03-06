@@ -3,6 +3,7 @@
  */
 const db = require('../util/db');
 const moment = require('moment');
+
 const Script = db.defineModel('Script', {
     filePath: {
         type: db.STRING(),
@@ -30,6 +31,7 @@ const Script = db.defineModel('Script', {
         }
     }
 });
+
 
 // Script.beforeValidate(function (Script) {
 //     if (Script.isNewRecord) {

@@ -12,7 +12,7 @@
                 page: {
                     currentPage: 1,
                     pageSize: 10,
-                    totalPage: 0
+                    total: 0
                 },
                 createFormShow: false,
                 projectFromData: {
@@ -68,7 +68,8 @@
                 }).then(res => {
                     if (res.data.code === 0) {
                         this.projectList = res.data.data.rows || [];
-                        this.page.totalPage = Math.ceil(res.data.data.count / this.page.pageSize) || 0;
+                        this.page.total = response.data.data.count;
+                        // this.page.totalPage = Math.ceil(res.data.data.count / this.page.pageSize) || 0;
                     } else {
                         Util.dialog.show({
                             msg: res.data.message

@@ -2,9 +2,11 @@
  * Created by vslimit on 2017/9/10.
  */
 const db = require('../util/db');
+// const Script = require('./Script');
+
 const Project = db.defineModel('Project', {
     projectName: {
-        type:db.STRING(255),
+        type: db.STRING(255),
         allowNull: false
     },
     frontPrincipal: {
@@ -20,4 +22,12 @@ const Project = db.defineModel('Project', {
         allowNull: false
     }
 });
+
+
+// Project.associate = function (models) {
+//     Project.hasMany(models.Script, {
+//         foreignKey: 'projectId'
+//     })
+// };
+
 module.exports = Project;

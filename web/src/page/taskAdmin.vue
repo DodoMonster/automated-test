@@ -16,17 +16,7 @@
         },
         data() {
             return {
-                projectList: [{
-                    projectName: '亚欧新平台储值改版1',
-                    id: 1,
-                    text: '亚欧新平台储值改版1',
-                    value: '亚欧新平台储值改版1'
-                }, {
-                    projectName: '亚欧新平台储值改版2',
-                    id: 2,
-                    text: '亚欧新平台储值改版2',
-                    value: '亚欧新平台储值改版2'
-                }],
+                projectList: [],
                 scriptList: [],
                 resultList: [],
                 resultDialog: {
@@ -45,7 +35,12 @@
                 page: {
                     totalPage: 0,
                     currentPage: 1,
-                    pageSize: 1,
+                    pageSize: 10,
+                    total: 0
+                },
+                resultPage: {
+                    currentPage: 1,
+                    pageSize: 20,
                     total: 0
                 },
                 resultImgDialogShow: false,
@@ -54,32 +49,54 @@
                     pagination: {
                         el: '.swiper-pagination'
                     }
-                }
+                },
+                resultData: {}
             }
         },
         mounted() {
             this.getScriptList();
+            this.getProjectList();
         },
         methods: {
+            getProjectList() {
+                this.$http.get('/api/project/getProjectList', {
+                    params: {
+                        function: 'getAll'
+                    }
+                }).then(res => {
+                    if (res.data.code === 0) {
+                        this.projectList = res.data.data || [];
+                    } else {
+                        Util.dialog.show({
+                            msg: res.data.message
+                        });
+                    }
+                }).catch(err => {})
+            },
             getScriptList() {
                 this.$http.get('/api/script/getScript', {
                     params: Object.assign(this.page, this.searchFormData)
                 }).then((response) => {
                     this.scriptList = response.data.data.rows || [];
-                    this.page.totalPage = Math.ceil(response.data.data.count / this.page.pageSize) || 0;
+                    this.page.total = response.data.data.count;
+                    // this.page.totalPage = Math.ceil(response.data.data.count / this.page.pageSize) || 0;
                 }).catch((err) => {
                     console.log(err);
                 });
             },
             // 查看测试结果
             getResult(data) {
+                this.resultData = data;
                 this.resultDialog.title = data.testName;
+                let params = {
+                    scriptId: data.id
+                };
+                params = Object.assign(params, this.resultPage);
                 this.$http.get('/api/task/getResult', {
-                    params: {
-                        scriptId: data.id
-                    }
+                    params: params
                 }).then((res) => {
-                    this.resultList = res.data.data;
+                    this.resultList = res.data.data.rows || [];;
+                    this.resultPage.total = res.data.data.count || 0;
                     if (!this.resultList.length) {
                         Util.dialog.show({
                             msg: '暂无测试结果！'
@@ -236,6 +253,16 @@
             handleCurrentChange(page) {
                 this.page.currentPage = page;
                 this.getScriptList();
+            },
+            // 分页的每页条数改变时
+            handleResultSizeChange(size) {
+                console.log(size);
+                this.resultPage.pageSize = size;
+                this.getResult(this.resultData);
+            },
+            handleResultCurrentChange(page) {
+                this.resultPage.currentPage = page;
+                this.getResult(this.resultData);
             }
         }
     }

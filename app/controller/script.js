@@ -2,6 +2,7 @@
  * Created by dodomonster on 2018/02/10.
  */
 'use strict';
+
 const Script = require('../model/Script'),
     ApiResult = require('../../config/rest').APIResult,
     uploadFile = require('../util/uploadFile'),
@@ -59,7 +60,7 @@ exports.edit = async (ctx, next) => {
             testDesc: testDesc,
             filePath: filePath,
             params: params,
-            updateTime:+new Date()
+            updateTime: +new Date()
         }, {
             where: {
                 id: id

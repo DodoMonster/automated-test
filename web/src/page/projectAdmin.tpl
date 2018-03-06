@@ -26,7 +26,7 @@
             </el-table-column>
         </el-table>
         <el-pagination class="text-center" background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="page.currentPage"
-            :page-sizes="[1, 10, 20, 30, 40]" :page-size="page.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="page.totalPage">
+            :page-sizes="[1, 10, 20, 30, 40]" :page-size="page.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="page.total">
         </el-pagination>
 
         <el-dialog title="创建项目" :visible.sync="createFormShow">

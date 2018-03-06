@@ -79,7 +79,6 @@ function defineModel(name, attributes) {
     });
 }
 
-
 const TYPES = ['STRING', 'INTEGER', 'BIGINT', 'TEXT', 'DOUBLE', 'DATEONLY', 'BOOLEAN', 'VIRTUAL', 'DATE'];
 
 var exp = {
@@ -102,5 +101,6 @@ for (let type of TYPES) {
 
 exp.ID = ID_TYPE;
 exp.NOW = Sequelize.NOW;
+exp.sequelize = sequelize;
 
 module.exports = exp;

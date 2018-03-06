@@ -16,9 +16,9 @@
                 </el-form-item>
             </el-form>
         </div>
-        <el-table stripe :default-sort="{prop: 'lastRunTime', order: 'descending'}" :filters="projectList" :filter-method="filterHandler"
-            :data="scriptList" style="width: 100%">
-            <el-table-column prop="projectId" label="项目" width="250" :filters="projectList" filter-placement="bottom-end" :filter-method="filterProject">
+        <el-table stripe :default-sort="{prop: 'lastRunTime', order: 'descending'}" :filter-method="filterHandler" :data="scriptList"
+            style="width: 100%">
+            <el-table-column prop="projectId" label="项目" width="250">
             </el-table-column>
             <el-table-column sortable label="上一次运行时间" width="200">
                 <template slot-scope="scope">
@@ -45,7 +45,7 @@
             </el-table-column>
         </el-table>
         <el-pagination class="text-center" background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="page.currentPage"
-            :page-sizes="[1, 10, 20, 30, 40]" :page-size="page.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="page.totalPage">
+            :page-sizes="[10, 20, 30, 40]" :page-size="page.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="page.total">
         </el-pagination>
     </el-card>
     <el-dialog title="添加参数" :visible.sync="addParamsDialogShow">
@@ -75,11 +75,6 @@
                     <div v-html="props.row.resultLog"></div>
                 </template>
             </el-table-column>
-            <!-- <el-table-column label="测试结果日志">
-                <template slot-scope="scope">
-                    <div v-html="scope.row.resultLog"></div>
-                </template>
-            </el-table-column> -->
             <el-table-column property="resultImg" label="操作" width="120" align="center">
                 <template slot-scope="scope">
                     <el-button v-if="scope.row.resultImg" title="查看截图" @click="showResultImg(scope.row)" icon="el-icon-zoom-in" type="success"
@@ -91,6 +86,9 @@
                 </template>
             </el-table-column>
         </el-table>
+        <el-pagination class="text-center" background @size-change="handleResultSizeChange" @current-change="handleResultCurrentChange" :current-page="resultPage.currentPage"
+            :page-sizes="[10, 20, 30, 40]" :page-size="resultPage.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="resultPage.total">
+        </el-pagination>
     </el-dialog>
     <el-dialog :visible.sync="resultImgDialogShow">
         <swiper :options="swiperOption">

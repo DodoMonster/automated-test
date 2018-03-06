@@ -27,7 +27,7 @@ function mkdirsSync(dirname) {
  */
 function getSuffixName(fileName) {
     let nameList = fileName.split('.');
-    return nameList[nameList.length - 1];
+    return nameList;
 }
 
 /**
@@ -60,7 +60,7 @@ function uploadFile(ctx, options) {
         // 解析请求文件事件
         busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
             let timestamp = +new Date();
-            let fileName = timestamp + '_' + Math.random().toString(16).substr(2) + '.' + getSuffixName(filename);
+            let fileName = timestamp + '_' + filename;
             let _uploadFilePath = path.join(filePath, fileName);
             let saveTo = path.join(_uploadFilePath);
 

@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer'),
     iPhone6 = devices['iPhone 6'],
     path = require('path'),
     fileSavePath = path.join(__dirname, '../results/'),
-    testJob = require('../../controller/testJob');
+    testJob = require('../../controller/task');
 
 function startJob(allParams, paramsList) {
     (async () => {

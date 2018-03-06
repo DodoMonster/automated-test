@@ -2,6 +2,7 @@
  * Created by vslimit on 2017/9/10.
  */
 const db = require('../util/db');
+
 const Task = db.defineModel('Task', {
     scriptId: {
         type: db.BIGINT(20),

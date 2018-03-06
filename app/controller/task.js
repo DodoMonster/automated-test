@@ -47,7 +47,7 @@ exports.delete = async (ctx, next) => {
             let result = Task.update({
                 deleted: 1
             }, {
-                where: { 
+                where: {
                     id: id
                 }
             });
@@ -68,7 +68,9 @@ exports.delete = async (ctx, next) => {
 exports.list = async (ctx, next) => {
     console.log('-------------------- start 获取运行任务结果 ---------------------');
     console.log(ctx.request.query);
-    let scriptId = ctx.query.scriptId;
+    let scriptId = ctx.query.scriptId,
+        currentPage = Number(ctx.query.currentPage) - 1 || 0,
+        pageSize = Number(ctx.query.pageSize) || 10;
     if (!scriptId) {
         ctx.rest(ApiResult("", -102, "参数为空"));
     } else {
@@ -78,11 +80,13 @@ exports.list = async (ctx, next) => {
                 deleted: 0
             };
             condition.scriptId = scriptId;
-            result = await Task.findAll({
+            result = await Task.findAndCountAll({
                 where: condition,
                 order: [
                     ["updateTime", "DESC"]
-                ]
+                ],
+                limit: pageSize,
+                offset: currentPage * pageSize
             });
             console.log(result);
         } catch (e) {
