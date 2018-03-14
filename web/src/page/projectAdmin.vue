@@ -68,7 +68,7 @@
                 }).then(res => {
                     if (res.data.code === 0) {
                         this.projectList = res.data.data.rows || [];
-                        this.page.total = response.data.data.count;
+                        this.page.total = res.data.data.count;
                         // this.page.totalPage = Math.ceil(res.data.data.count / this.page.pageSize) || 0;
                     } else {
                         Util.dialog.show({

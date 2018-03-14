@@ -1,15 +1,16 @@
-/**
- * Created by vslimit on 2017/9/10.
- */
 const db = require('../util/db');
 const crypto = require('crypto');
 // const uuid = require('node-uuid');
 const User = db.defineModel('user', {
-    username: {
-        type: db.STRING(), 
+    department: {
+        type: db.STRING(30),
         allowNull: false
     },
-    password: db.VIRTUAL(),
+    username: {
+        type: db.STRING(64),
+        allowNull: false
+    },
+    password: db.STRING(30),
 
     // auth_token: {
     //     type: db.STRING(),
@@ -25,7 +26,7 @@ const User = db.defineModel('user', {
 //     if (user.isNewRecord) {
 //         let salt = this.methods.makeSalt();
 //         user.set('salt', salt);
-//         user.set('hashed_password', this.methods.encryptPassword(user.password, salt));
+//         user.set('password', this.methods.encryptPassword(user.password, salt));
 //     }
 // });
 
@@ -79,12 +80,16 @@ User.methods = {
     //         .digest('hex');
     // },
 
-   load: function (condition) {
-        return User.findOne({where: condition});
+    load: function (condition) {
+        return User.findOne({
+            where: condition
+        });
     },
 
     count: function (condition) {
-        return User.count({where: condition});
+        return User.count({
+            where: condition
+        });
     },
 };
 

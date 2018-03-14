@@ -11,6 +11,14 @@ const Script = db.defineModel('Script', {
         allowNull: false
     },
     projectId: db.BIGINT(),
+    projectId: {
+        type: db.BIGINT(11),
+        field: 'projectId',
+        references: {
+            model: 'Project',
+            key: 'id'
+        },
+    },
     testName: {
         type: db.STRING(),
         unique: true

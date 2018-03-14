@@ -12,6 +12,7 @@ module.exports = function (app) {
     app.get('/api/user/getUserList', user.list);
     app.post('/api/user/createUser', user.create);
     app.post('/api/user/deleteUser', user.delete);
+    app.post('/api/user/editUser', user.edit);    
 
     app.get('/api/project/getProjectList', project.list);
     app.post('/api/project/createProject', project.create);

@@ -2,7 +2,7 @@
  * Created by vslimit on 2017/9/10.
  */
 const db = require('../util/db');
-// const Script = require('./Script');
+const Script = require('./Script');
 
 const Project = db.defineModel('Project', {
     projectName: {
@@ -22,12 +22,10 @@ const Project = db.defineModel('Project', {
         allowNull: false
     }
 });
-
+Project.hasMany(Script);
 
 // Project.associate = function (models) {
-//     Project.hasMany(models.Script, {
-//         foreignKey: 'projectId'
-//     })
+//     Project.hasMany(models.Script)
 // };
 
 module.exports = Project;

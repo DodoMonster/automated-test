@@ -5,30 +5,51 @@
 const User = require('../model/User');
 const ApiResult = require('../../config/rest').APIResult;
 
+exports.list = async (ctx, next) => {
+    console.log('-------------------- start 获取用户列表 ---------------------');
+    let currentPage = Number(ctx.query.currentPage) - 1 || 0,
+        pageSize = Number(ctx.query.pageSize) || 10;
+    let condition = {
+        deleted: 0
+    };
+    let result = await User.findAndCountAll({
+        where: condition,
+        order: [
+            ["updateTime", "DESC"]
+        ],
+        limit: pageSize,
+        offset: currentPage * pageSize,
+        attributes: ['id', 'username', 'department']
+    });
+    ctx.rest(ApiResult(result));
+    console.log('-------------------- end 获取用户列表 ---------------------');
+};
+
 /**
  *  Create user 
  */
 exports.create = async (ctx, next) => {
-    let mobile = ctx.request.body.mobile;
-    let password = ctx.request.body.password;
-    console.log(mobile);
-    console.log(password);
-    if (!mobile || !password) {
-        ctx.rest(ApiResult("", -102, "手机号或密码不能为空"));
+    let params = {
+        username: ctx.request.body.username,
+        department: ctx.request.body.department,
+        password: ctx.request.body.password
+    };
+
+    if (!params.username || !params.department || !params.password) {
+        ctx.rest(ApiResult("", -102, "参数不能为空"));
     } else {
         let count = await User.methods.count({
-            mobile: mobile
+            username: params.username,
+            delete: 0
         });
-        console.log(count);
         if (count > 0) {
-            ctx.rest(ApiResult("", -101, "手机号已存在"));
+            ctx.rest(ApiResult("", -101, "用户名已存在"));
         } else {
-            let user = await User.create({
-                mobile: mobile,
-                password: password,
-                provider: 'local'
-            });
-            ctx.rest(ApiResult(user.access_token));
+            params.salt = User.methods.makeSalt();
+            params.password = User.methods.encryptPassword(params.password, params.salt);
+            let user = await User.create(params);
+            ctx.rest(ApiResult({}));
+
         }
     }
 };
@@ -61,19 +82,46 @@ exports.delete = async (ctx, next) => {
     console.log('-------------------- end 删除用户 ---------------------');
 };
 
-exports.list = async (ctx, next) => {
-    let condition = {
-        deleted: 0
-    };
-    let result = await User.findAndCountAll({
-        where: condition,
-        order: [
-            ["updateTime", "DESC"]
-        ],
-        limit: pageSize,
-        offset: currentPage * pageSize
-    });
-    ctx.rest(ApiResult(result));
+exports.edit = async (ctx, next) => {
+    console.log('-------------------- start 修改用户信息 ---------------------');
+    let id = ctx.request.body.id,
+        hasChangePwd = ctx.request.body.showEditPwd,
+        params = {
+            username: ctx.request.body.username,
+            department: ctx.request.body.department
+        };
+    if (!params.username || !params.department) {
+        ctx.rest(ApiResult("", -102, "参数不能为空"));
+    } else {
+        let count = await User.methods.count({
+            username: params.username,
+            deleted: 0,
+            id: {
+                $not: id
+            }
+        });
+        if (count > 0) {
+            ctx.rest(ApiResult("", -101, "用户名已存在"));
+            return;
+        }
+        if (hasChangePwd) {
+            params.salt = User.methods.makeSalt();
+            params.password = User.methods.encryptPassword(ctx.request.body.password, params.salt);
+            var result = User.update(params, {
+                where: {
+                    id: id
+                }
+            });
+        } else {
+            var result = User.update(params, {
+                where: {
+                    id: id
+                }
+            });
+        }
+        ctx.rest(ApiResult(result));
+    }
+    console.log('-------------------- end 修改用户信息 ---------------------');
 };
 
 exports.login = async (ctx, next) => {
