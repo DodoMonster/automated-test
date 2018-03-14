@@ -118,7 +118,7 @@ exports.list = async (ctx, next) => {
  */
 exports.upload = async (ctx, next) => {
     console.log('-------------------- start 上传脚本 ---------------------');
-    let serverFilePath = path.join(__dirname, '../uploads/scripts')
+    let serverFilePath = path.join(__dirname, '../static/uploads/scripts')
     console.log(serverFilePath);
     // 上传文件事件
     let result = await uploadFile(ctx, {

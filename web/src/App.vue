@@ -55,9 +55,6 @@
         },
         mounted() {},
         methods: {
-            // goLink(routerPath) {
-            //   this.$router.push('/' + routerPath);
-            // }
         }
     }
 </script>

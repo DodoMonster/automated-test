@@ -7,16 +7,26 @@ const user = require('../app/controller/user'),
     project = require('../app/controller/project'),
     script = require('../app/controller/script'),
     task = require('../app/controller/task');
+const fs = require('fs.promised');
+const join = require('path').join;
+
 
 module.exports = function (app) {
+    const login = async function (ctx, next) {
+        ctx.response.type = 'html';
+        ctx.response.body = await fs.readFile(join(__dirname, '../web/src/login.html'), 'utf8');
+    };
+
+    app.get('/login', login);
     app.get('/api/user/getUserList', user.list);
     app.post('/api/user/createUser', user.create);
     app.post('/api/user/deleteUser', user.delete);
-    app.post('/api/user/editUser', user.edit);    
-
+    app.post('/api/user/editUser', user.edit);
+    app.post('/api/user/login', user.login);
+    
     app.get('/api/project/getProjectList', project.list);
     app.post('/api/project/createProject', project.create);
-    app.post('/api/project/editProject', project.edit);    
+    app.post('/api/project/editProject', project.edit);
     app.post('/api/project/deleteProject', project.delete);
 
     app.post('/api/script/createScript', script.create);

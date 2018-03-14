@@ -11,7 +11,7 @@ const User = db.defineModel('user', {
         allowNull: false
     },
     password: db.STRING(30),
-
+    salt: db.STRING(64)
     // auth_token: {
     //     type: db.STRING(),
     //     allowNull: true
@@ -60,7 +60,6 @@ User.methods = {
      * @return {String}
      * @api public
      */
-
     encryptPassword: function (password, salt) {
         if (!password) return '';
         try {
@@ -73,12 +72,11 @@ User.methods = {
         }
     },
 
-    // makeAccessToken: function (id) {
-    //     return crypto
-    //         .createHmac('sha1', id.toString())
-    //         .update(uuid.v4() + Date.now())
-    //         .digest('hex');
-    // },
+    makeAccessToken: function (id) {
+        return crypto
+            .createHmac('sha1', id.toString()).
+            digest('hex');
+    },
 
     load: function (condition) {
         return User.findOne({

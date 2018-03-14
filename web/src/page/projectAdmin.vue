@@ -58,6 +58,9 @@
                 areaList: ['亚欧', '港台', '韩国', '总经办']
             }
         },
+        created() {
+            Util.checkIfLogin();
+        },
         mounted() {
             this.getProjectList();
         },

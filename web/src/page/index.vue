@@ -14,6 +14,9 @@
         data() {
             return {}
         },
+        mounted() {
+            Util.checkIfLogin();
+        },
         methods: {}
     }
 </script>

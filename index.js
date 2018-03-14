@@ -12,7 +12,7 @@ const rest = require('./config/rest');
 
 const staticSer = require('koa-static');
 
-app.use(staticSer(join(__dirname + '/app/uploads')));
+app.use(staticSer(join(__dirname + '/app/static')));
 
 const webpack = require('webpack');
 const convert = require('koa-convert');
@@ -77,6 +77,8 @@ app.use(middleware({
         }
     }
 }));
+
+
 
 app.use(bodyParser());
 app.use(rest.restify());

@@ -22,7 +22,7 @@ exports.run = async (ctx, next) => {
         ctx.rest(ApiResult("", -102, "参数为空"));
     } else {
         try {
-            let scriptFile = require('../uploads/scripts/' + filePath);
+            let scriptFile = require('../static/uploads/scripts/' + filePath);
             scriptFile.startJob(ctx.request.body, paramsList);
         } catch (e) {
             console.log(e);

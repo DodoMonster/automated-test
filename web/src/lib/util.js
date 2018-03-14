@@ -3,9 +3,6 @@ import {
 } from 'events';
 const Util = new EventEmitter();
 
-// import md5 from 'blueimp-md5';
-
-
 /**
  * 1.普通提示：Util.dialog.alert({msg:['请先选择系统名称！']}); - 只显示确定按钮
  * 2.带询问：Util.dialog.show({msg:['请先选择系统名称！'],callback:function(){}); 
@@ -15,7 +12,7 @@ const Util = new EventEmitter();
  *          msg:提示语,必须传数组 (1.普通字符串;2.多语言：this.$t("member_name_input_tips"))
  *          cancleBtnText:取消按钮文案(有默认值-取消，可不传),
  *          confirmBtnText:确定按钮文案(有默认值-确定，可不传) 
- * }
+ *     }
  */
 Util.dialog = {
     show(data) {
@@ -41,63 +38,6 @@ Util.dialog = {
         Util.on('cancel-dialog', fn);
         return this;
     }
-}
-
-// Util.loading = {
-//     showLoad() {
-//         Util.emit('show-load');
-//         return this;
-//     },
-//     hideLoad() {
-//         Util.emit('hide-load');
-//         return this;
-//     },
-//     showLoading() {
-//         Util.emit('show-loading');
-//         return this;
-//     },
-//     hideLoading() {
-//         Util.emit('hide-loading');
-//         return this;
-//     }
-// }
-
-Util.format = function (dateStr, format) {
-    var o = {
-        "M+": dateStr.getMonth() + 1,
-        "d+": dateStr.getDate(),
-        "h+": dateStr.getHours(),
-        "m+": dateStr.getMinutes(),
-        "s+": dateStr.getSeconds(),
-        "q+": Math.floor((dateStr.getMonth() + 3) / 3),
-        "S": dateStr.getMilliseconds()
-    }
-    if (/(y+)/.test(format)) {
-        format = format.replace(RegExp.$1, (dateStr.getFullYear() + "").substr(4 - RegExp.$1.length));
-    }
-    for (var k in o) {
-        if (new RegExp("(" + k + ")").test(format)) {
-            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
-        }
-    }
-    return format;
-}
-
-Util.getFormatDate = function (dateStr, pattern) {
-    if (!dateStr) {
-        dateStr = new Date();
-    } else {
-        dateStr = new Date(dateStr);
-    }
-    if (!pattern) {
-        pattern = "yyyy-MM-dd hh:mm:ss";
-    }
-    return this.format(dateStr, pattern);
-}
-
-
-Util.formatTime = function (time) {
-    return time < 10 ? '0' + time : time;
 }
 
 Util.isBlank = function (obj) {
@@ -207,16 +147,14 @@ return :
 2：已登录
 */
 Util.checkIfLogin = function (noNeedLogin, path) {
-    var uid = this.getCookie("efunUserid"),
-        sign = this.getCookie("mySign"),
-        loginSign = this.getCookie("loginSign"),
-        timestamp = this.getCookie('timestamp');
-    if (this.isBlank(uid) || this.isBlank(sign) || this.isBlank(timestamp) || this.isBlank(loginSign)) {
+    var username = this.getCookie("username"),
+        accessToken = this.getCookie('accessToken');
+    if (this.isBlank(username) || this.isBlank(accessToken)) {
         if (!noNeedLogin) { // 不需要强制跳转
             if (path) {
-                window.location.href = '/enter/login?from=' + encodeURIComponent(path);
+                window.location.href = '/login?from=' + encodeURIComponent(path);
             } else {
-                window.location.href = '/enter/login?from=' + encodeURIComponent(window.location.href);
+                window.location.href = '/login?from=' + encodeURIComponent(window.location.href);
             }
         } else {
             return false;
@@ -226,48 +164,12 @@ Util.checkIfLogin = function (noNeedLogin, path) {
     }
 }
 
-Util.checkAccountName = function (value) {
-    // var pattern = /^[a-zA-Z][a-zA-Z0-9_]{5,17}$/;
-    let pattern = /^[a-zA-Z]\w{5,17}$/;
-    return pattern.test(value);
-}
-
-Util.checkPassword = function (value) {
-    var pattern = /^.{6,16}$/;
-    return pattern.test(value);
-}
-
 Util.isEmptyObject = function (e) {
     var t;
     for (t in e) {
         return !1;
     }
     return !0
-}
-
-Util.browserType = function () {
-    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-    var isOpera = userAgent.indexOf("Opera") > -1;
-    //判断是否Opera浏览器
-    if (isOpera) {
-        return "Opera"
-    }
-    //判断是否Firefox浏览器
-    if (userAgent.indexOf("Firefox") > -1) {
-        return "FF";
-    }
-    if (userAgent.indexOf("Chrome") > -1) {
-        return "Chrome";
-    }
-    //判断是否Safari浏览器
-    if (userAgent.indexOf("Safari") > -1) {
-        return "Safari";
-    }
-    //判断是否IE浏览器
-    if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
-        return "IE";
-    }
-    return 'others';
 }
 
 export default Util;

@@ -93,7 +93,7 @@
     <el-dialog :visible.sync="resultImgDialogShow">
         <swiper :options="swiperOption">
             <swiper-slide v-for="(slide,index) in resultImg" :key="index">
-                <img :src="'results/' + slide" alt="">
+                <img :src="'uploads/results/' + slide" alt="">
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
         </swiper>

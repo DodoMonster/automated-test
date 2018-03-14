@@ -40,7 +40,7 @@ exports.create = async (ctx, next) => {
     } else {
         let count = await User.methods.count({
             username: params.username,
-            delete: 0
+            deleted: 0
         });
         if (count > 0) {
             ctx.rest(ApiResult("", -101, "用户名已存在"));
@@ -125,20 +125,20 @@ exports.edit = async (ctx, next) => {
 };
 
 exports.login = async (ctx, next) => {
-    let mobile = ctx.request.body.mobile;
+    let username = ctx.request.body.username;
     let password = ctx.request.body.password;
-    if (!mobile || !password) {
-        ctx.rest(ApiResult("", -102, "手机号或密码不能为空"));
+    if (!username || !password) {
+        ctx.rest(ApiResult("", -102, "参数不能为空"));
     } else {
         let user = await User.methods.load({
-            mobile: mobile
-        });
+            username: username
+        });             
         if (user) {
-            if (User.methods.authenticate(password, user.salt, user.hashed_password)) {
+            if (User.methods.authenticate(password, user.salt, user.password)) {
+                var accessToken = User.methods.makeAccessToken(user.id);
                 ctx.rest(ApiResult({
-                    name: user.name,
-                    mobile: user.mobile,
-                    access_token: user.access_token
+                    username: user.username,
+                    accessToken:accessToken
                 }));
             } else {
                 ctx.rest(ApiResult("", -105, "用户密码错误"));

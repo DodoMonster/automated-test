@@ -40,6 +40,9 @@
                 id: null
             }
         },
+        created() {
+            Util.checkIfLogin();
+        },
         mounted() {
             this.id = this.$route.params.id || null;
             if (this.id) {

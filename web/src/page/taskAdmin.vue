@@ -53,6 +53,9 @@
                 resultData: {}
             }
         },
+        created() {
+            Util.checkIfLogin();
+        },
         mounted() {
             this.getScriptList();
             this.getProjectList();
