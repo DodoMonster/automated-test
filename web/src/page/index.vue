@@ -10,11 +10,12 @@
 </template>
 
 <script>
+    import Util from '~/lib/util';
     export default {
         data() {
             return {}
         },
-        mounted() {
+        created() {
             Util.checkIfLogin();
         },
         methods: {}

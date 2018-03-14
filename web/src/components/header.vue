@@ -1,29 +1,43 @@
 <template>
-        <div class="page-header clearfix">
-            <div class="page-header-l">
-                <img class="logo" src="https://www.efun.com/static/images/icon.png" alt="">
-            </div>
-            <div class="page-header-r">
-                <img class="user-avatar" src="https://restw-download.vsplay.com/res_tw/platform/pc/assets/default-avatar-gg.jpg" alt="">
-                <el-button class="btn-logout" size="mini">登出</el-button>
-            </div>
+    <div class="page-header clearfix">
+        <div class="page-header-l">
+            <img class="logo" src="https://www.efun.com/static/images/icon.png" alt="">
         </div>
+        <div class="page-header-r">
+            <img class="user-avatar" src="https://restw-download.vsplay.com/res_tw/platform/pc/assets/default-avatar-gg.jpg" alt="">
+            <span class="username">{{username}}</span>
+            <el-button @click="logout()" class="btn-logout" size="mini">登出</el-button>
+        </div>
+    </div>
 </template>
 
 <script>
+    import Util from '~/lib/util';
     export default {
         data() {
-            return {}
+            return {
+                username: ''
+            }
+        },
+        created() {
+            this.username = Util.getCookie('username');
         },
         methods: {
-            // goLink(routerPath) {
-            //   this.$router.push('/' + routerPath);
-            // }
+            logout() {
+                Util.clearCookie();
+                location.href = '/login';
+            }
         }
     }
 </script>
 
 <style scoped>
+    .username {
+        color: #fff;
+        position: relative;
+        margin: 0 10px 0;
+        top: -4px;
+    }
     .page-header-l {
         width: 200px;
         float: left;
@@ -40,7 +54,7 @@
         border-radius: 50%;
         position: relative;
         top: 10px;
-        margin-right: 20px;
+        /* margin-right: 20px; */
     }
     .page-header,
     .page-header-l,
