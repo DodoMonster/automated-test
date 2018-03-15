@@ -97,7 +97,7 @@
                 } else {
                     this.isEdit = false;
                 }
-                this.resetForm('createForm');
+                // this.resetForm('createForm');
             },
             confirmCreate() {
                 this.$refs['createForm'].validate((valid) => {
@@ -123,7 +123,7 @@
                     endPrincipal: '',
                     areaType: ''
                 };
-                this.resetForm('createForm');
+                // this.resetForm('createForm');
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
