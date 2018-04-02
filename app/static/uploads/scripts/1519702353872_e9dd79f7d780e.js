@@ -18,7 +18,7 @@ const puppeteer = require('puppeteer'),
         path: 'screen/首页.jpg'
     });
     console.log("点击首页的登录按钮");
-    await page.tap('.user-photo');
+    await page.tap('.login-link');
     await page.screenshot({
         path: 'screen/点击首页登录按钮.jpg'
     });

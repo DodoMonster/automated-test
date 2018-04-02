@@ -8,6 +8,10 @@ const Script = require('../model/Script'),
     ApiResult = require('../../config/rest').APIResult,
     uploadFile = require('../util/uploadFile'),
     path = require('path');
+    
+// 定义project & script两个model间的关系
+Script.belongsTo(Project);
+Project.hasMany(Script);
 
 /**
  * 创建测试脚本
@@ -99,6 +103,8 @@ exports.list = async (ctx, next) => {
             $like: testName + '%'
         };
     }
+
+
     let result = await Script.findAndCountAll({
         where: condition,
         order: [
@@ -106,9 +112,9 @@ exports.list = async (ctx, next) => {
         ],
         limit: pageSize,
         offset: currentPage * pageSize,
-        include: {
+        include: [{
             model: Project
-        }
+        }]
     });
     console.log(result);
     ctx.rest(ApiResult(result));

@@ -12,7 +12,7 @@ var sequelize = new Sequelize(Config.database, Config.username, Config.password,
 
 const ID_TYPE = Sequelize.BIGINT();
 
-function defineModel(name, attributes) {
+function defineModel(name, attributes, classMethods) {
     var attrs = {};
     for (let key in attributes) {
         let value = attributes[key];
@@ -60,7 +60,6 @@ function defineModel(name, attributes) {
         hooks: {
             beforeValidate: function (obj) {
                 let now = Date.now();
-                console.log(obj);
                 obj.updatedTime = now;
                 // if (obj.isNewRecord) {
                 //     console.log('will create entity...');
@@ -79,7 +78,7 @@ function defineModel(name, attributes) {
     });
 }
 
-const TYPES = ['STRING', 'INTEGER', 'BIGINT', 'TEXT', 'DOUBLE', 'DATEONLY', 'BOOLEAN', 'VIRTUAL', 'DATE'];
+const TYPES = ['STRING', 'INTEGER', 'ENUM', 'BIGINT', 'TEXT', 'DOUBLE', 'DATEONLY', 'BOOLEAN', 'VIRTUAL', 'DATE'];
 
 var exp = {
     defineModel: defineModel,

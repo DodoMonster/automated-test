@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer'),
     iPhone6 = devices['iPhone 6'],
     path = require('path'),
     fileSavePath = path.join(__dirname, '../results/'),
-    testJob = require('../../../../controller/task');
+    testJob = require('../../../controller/task');
 
 function startJob(allParams, params) {
     (async () => {
@@ -11,8 +11,10 @@ function startJob(allParams, params) {
         console.log(params);
         var result = {
                 imgList: [],
-                txtLog: ''
+                txtLog: '',
+                runResult: 1
             },
+            hasError = false,
             timeStamp = +new Date();
         const browser = await puppeteer.launch(),
             page = await browser.newPage();
@@ -27,7 +29,7 @@ function startJob(allParams, params) {
             result.imgList.push('home_' + timeStamp + '.jpg');
             console.log("点击首页的登录按钮");
             result.txtLog += '<p>2.点击首页的登录按钮</p>';
-            await page.tap('.user-photo');
+            await page.tap('.login-link');
             await page.screenshot({
                 path: fileSavePath + 'click-login-btn_' + timeStamp + '.jpg'
             });
@@ -75,6 +77,10 @@ function startJob(allParams, params) {
             console.log(e);
             console.log("测试出错了" + JSON.stringify(e));
             result.txtLog += '<p>测试出错了 ' + JSON.stringify(e) + '</p>';
+            hasError = true;
+        }
+        if (!hasError) {
+            result.runResult = 0;
         }
         console.log(result);
         testJob.save(result, allParams, params);

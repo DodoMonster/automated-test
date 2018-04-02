@@ -3,7 +3,6 @@
  */
 const db = require('../util/db');
 
-
 const Task = db.defineModel('Task', {
     scriptId: {
         type: db.BIGINT(20),
@@ -21,14 +20,12 @@ const Task = db.defineModel('Task', {
     params: {
         type: db.STRING(200),
         allowNull: true
+    },
+    result: {
+        type: db.ENUM(0, 1),
+        allowNull: false,
+        defaultValue: 0
     }
-    // runTime: {
-    //     type: db.DATE(),
-    //     defaultValue: db.NOW,
-    //     get() {
-    //         return moment(this.getDataValue('runTime')).format('YYYY-MM-DD HH:mm:ss');
-    //     }
-    // }
 });
 
 module.exports = Task;

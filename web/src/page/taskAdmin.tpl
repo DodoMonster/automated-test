@@ -18,7 +18,7 @@
         </div>
         <el-table stripe :default-sort="{prop: 'lastRunTime', order: 'descending'}" :filter-method="filterHandler" :data="scriptList"
             style="width: 100%">
-            <el-table-column prop="projectId" label="项目" width="250">
+            <el-table-column prop="Project.projectName" label="项目" width="250">
             </el-table-column>
             <el-table-column sortable label="上一次运行时间" width="200">
                 <template slot-scope="scope">
@@ -68,7 +68,11 @@
     <el-dialog :title="resultDialog.title" width="50%" :visible.sync="resultDialog.show">
         <el-table :data="resultList" max-height="800">
             <el-table-column property="createdTime" label="运行日期" width="200"></el-table-column>
-            <el-table-column property="result" label="运行结果" width="200"></el-table-column>
+            <el-table-column label="运行结果" width="200">
+                <template slot-scope="props">
+                    {{props.row.result == 1 ? '失败' : '成功'}}
+                </template>
+            </el-table-column>
             <el-table-column property="params" label="参数"></el-table-column>
             <el-table-column type="expand" label="测试结果日志" width="120">
                 <template slot-scope="props">

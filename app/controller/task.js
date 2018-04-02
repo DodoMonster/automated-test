@@ -113,6 +113,7 @@ exports.save = async (testResult, originParams, testParams) => {
             scriptId: originParams.id,
             resultImg: testResult ? testResult.imgList.join(',') : null,
             resultLog: testResult.txtLog,
+            result:testResult.runResult || 0,
             params: JSON.stringify(testParams)
         });
         console.log(result);

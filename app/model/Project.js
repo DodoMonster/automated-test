@@ -2,9 +2,8 @@
  * Created by vslimit on 2017/9/10.
  */
 const db = require('../util/db');
-const Script = require('./Script');
 
-const Project = db.defineModel('Project', {
+var Project = db.defineModel('Project', {
     projectName: {
         type: db.STRING(255),
         allowNull: false
@@ -23,16 +22,5 @@ const Project = db.defineModel('Project', {
     }
 });
 
-Project.hasMany(Script, {
-    foreignKey: 'projectId'
-});
-
-// Script.belongsTo(Project, {
-//     foreignKey: 'projectId'
-// });
-
-// Project.associate = function () {  
-//     Project.hasMany(Script)
-// };
 
 module.exports = Project;
