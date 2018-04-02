@@ -1,6 +1,7 @@
 <template>
     <swiper :options="swiperOption" ref="mySwiper">
         <swiper-slide v-for="(slide,index) in resultImg" :key="index">
+            <p>{{slide}}</p>            
             <img :src="'uploads/results/' + slide" alt="">
         </swiper-slide>
         <div class="swiper-button-prev" slot="button-prev"></div>

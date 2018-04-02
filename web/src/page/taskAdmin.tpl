@@ -70,7 +70,9 @@
             <el-table-column property="createdTime" label="运行日期" width="200"></el-table-column>
             <el-table-column label="运行结果" width="200">
                 <template slot-scope="props">
-                    {{props.row.result == 1 ? '失败' : '成功'}}
+                    <span class="color-danger" v-if="props.row.result == 1">失败</span>
+                    <span class="color-success" v-else>成功</span>                    
+                    <!-- {{props.row.result == 1 ? '失败' : '成功'}} -->
                 </template>
             </el-table-column>
             <el-table-column property="params" label="参数"></el-table-column>

@@ -5,11 +5,6 @@
 <script>
     import Util from '~/lib/util';
     import swiper from '~/components/swiper.vue';
-    // import 'swiper/dist/css/swiper.css';
-    // import {
-    //     swiper,
-    //     swiperSlide
-    // } from 'vue-awesome-swiper';
     export default {
         components: {
             swiper
@@ -63,7 +58,6 @@
         mounted() {
             this.getScriptList();
             this.getProjectList();
-            // console.log(ElementUI);
         },
         methods: {
             getProjectList() {
@@ -183,7 +177,7 @@
                         Util.dialog.show({
                             msg: '运行成功~请稍候再查看结果！'
                         });
-                        this.paramsList = [];
+                        // this.paramsList = [];
                     } else {
                         Util.dialog.show({
                             msg: response.data.message
@@ -213,6 +207,7 @@
                             msg: '删除该测试结果成功！'
                         });
                         this.resultList.splice(data.$index, 1);
+                        this.resultPage.total--;
                     } else {
                         Util.dialog.show({
                             msg: response.data.message
@@ -232,7 +227,7 @@
                     }
                 });
             },
-            // 删除测试任务结果
+            // 删除脚本
             deleteTestScript(data) {
                 this.$http.post('/api/script/deleteScript', {
                     id: data.row.id
@@ -242,6 +237,7 @@
                             msg: '删除测试脚本成功！'
                         });
                         this.scriptList.splice(data.$index, 1);
+                        this.page.total--;                        
                     } else {
                         Util.dialog.show({
                             msg: response.data.message
@@ -277,6 +273,12 @@
     .search-form {
         float: right;
         height: 38px;
+    }
+    .color-danger {
+        color: #f56c6c;
+    }
+    .color-success {
+        color: #67c23a;
     }
     .el-button--small,
     .el-button--small.is-round {
