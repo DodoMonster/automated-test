@@ -3,6 +3,7 @@
  */
 const db = require('../util/db');
 
+
 const Task = db.defineModel('Task', {
     scriptId: {
         type: db.BIGINT(20),
@@ -29,6 +30,5 @@ const Task = db.defineModel('Task', {
     //     }
     // }
 });
-
 
 module.exports = Task;

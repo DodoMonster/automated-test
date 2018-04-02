@@ -22,10 +22,17 @@ const Project = db.defineModel('Project', {
         allowNull: false
     }
 });
-Project.hasMany(Script);
 
-// Project.associate = function (models) {
-//     Project.hasMany(models.Script)
+Project.hasMany(Script, {
+    foreignKey: 'projectId'
+});
+
+// Script.belongsTo(Project, {
+//     foreignKey: 'projectId'
+// });
+
+// Project.associate = function () {  
+//     Project.hasMany(Script)
 // };
 
 module.exports = Project;

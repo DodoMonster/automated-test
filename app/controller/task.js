@@ -4,6 +4,7 @@
 'use strict';
 const Task = require('../model/Task'),
     Script = require('../model/Script'),
+    Project = require('../model/Project'),
     ApiResult = require('../../config/rest').APIResult,
     path = require('path');
 

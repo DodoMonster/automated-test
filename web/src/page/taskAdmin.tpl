@@ -86,16 +86,12 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-pagination class="text-center" background @size-change="handleResultSizeChange" @current-change="handleResultCurrentChange" :current-page="resultPage.currentPage"
-            :page-sizes="[10, 20, 30, 40]" :page-size="resultPage.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="resultPage.total">
+        <el-pagination class="text-center" background @size-change="handleResultSizeChange" @current-change="handleResultCurrentChange"
+            :current-page="resultPage.currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="resultPage.pageSize" layout="total, sizes, prev, pager, next, jumper"
+            :total="resultPage.total">
         </el-pagination>
     </el-dialog>
     <el-dialog :visible.sync="resultImgDialogShow">
-        <swiper :options="swiperOption">
-            <swiper-slide v-for="(slide,index) in resultImg" :key="index">
-                <img :src="'uploads/results/' + slide" alt="">
-            </swiper-slide>
-            <div class="swiper-pagination" slot="pagination"></div>
-        </swiper>
+        <swiper :resultImg="resultImg"></swiper>
     </el-dialog>
 </div>

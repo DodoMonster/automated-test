@@ -4,15 +4,15 @@
 
 <script>
     import Util from '~/lib/util';
-    import 'swiper/dist/css/swiper.css';
-    import {
-        swiper,
-        swiperSlide
-    } from 'vue-awesome-swiper';
+    import swiper from '~/components/swiper.vue';
+    // import 'swiper/dist/css/swiper.css';
+    // import {
+    //     swiper,
+    //     swiperSlide
+    // } from 'vue-awesome-swiper';
     export default {
         components: {
-            swiper,
-            swiperSlide
+            swiper
         },
         data() {
             return {
@@ -48,6 +48,10 @@
                 swiperOption: {
                     pagination: {
                         el: '.swiper-pagination'
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev'
                     }
                 },
                 resultData: {}
@@ -59,6 +63,7 @@
         mounted() {
             this.getScriptList();
             this.getProjectList();
+            // console.log(ElementUI);
         },
         methods: {
             getProjectList() {
@@ -82,7 +87,6 @@
                 }).then((response) => {
                     this.scriptList = response.data.data.rows || [];
                     this.page.total = response.data.data.count;
-                    // this.page.totalPage = Math.ceil(response.data.data.count / this.page.pageSize) || 0;
                 }).catch((err) => {
                     console.log(err);
                 });
@@ -249,7 +253,6 @@
             },
             // 分页的每页条数改变时
             handleSizeChange(size) {
-                console.log(size);
                 this.page.pageSize = size;
                 this.getScriptList();
             },
@@ -259,7 +262,6 @@
             },
             // 分页的每页条数改变时
             handleResultSizeChange(size) {
-                console.log(size);
                 this.resultPage.pageSize = size;
                 this.getResult(this.resultData);
             },
@@ -275,15 +277,6 @@
     .search-form {
         float: right;
         height: 38px;
-    }
-    .el-pagination {
-        margin: 20px auto;
-    }
-    .swiper-slide {
-        text-align: center
-    }
-    .swiper-slide img {
-        max-width: 350px;
     }
     .el-button--small,
     .el-button--small.is-round {

@@ -4,6 +4,7 @@
 'use strict';
 
 const Script = require('../model/Script'),
+    Project = require('../model/Project'),
     ApiResult = require('../../config/rest').APIResult,
     uploadFile = require('../util/uploadFile'),
     path = require('path');
@@ -104,7 +105,10 @@ exports.list = async (ctx, next) => {
             ["updateTime", "DESC"]
         ],
         limit: pageSize,
-        offset: currentPage * pageSize
+        offset: currentPage * pageSize,
+        include: {
+            model: Project
+        }
     });
     console.log(result);
     ctx.rest(ApiResult(result));

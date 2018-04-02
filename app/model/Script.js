@@ -3,6 +3,7 @@
  */
 const db = require('../util/db');
 const moment = require('moment');
+const Project = require('./Project');
 
 const Script = db.defineModel('Script', {
     filePath: {
@@ -40,6 +41,9 @@ const Script = db.defineModel('Script', {
     }
 });
 
+// Project.hasMany(Script, {foreignKey: 'projectId'});
+console.log(db.model);
+// Script.belongsTo(Project, {foreignKey: 'projectId'});
 
 // Script.beforeValidate(function (Script) {
 //     if (Script.isNewRecord) {
