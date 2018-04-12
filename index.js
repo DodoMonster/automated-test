@@ -9,32 +9,40 @@ const model = join(__dirname, 'app/model');
 var Router = require('koa-router');
 var router = new Router();
 const rest = require('./config/rest');
-
 const staticSer = require('koa-static');
 
 app.use(staticSer(join(__dirname + '/app/static')));
 
-const webpack = require('webpack');
-const convert = require('koa-convert');
-const koaWebpackMiddleware = require('koa-webpack-middleware');
-const webpackDevMiddleware = koaWebpackMiddleware.devMiddleware;
-const webpackHotMiddleware = koaWebpackMiddleware.hotMiddleware;
-const compiler = webpack(webpackDev);
+// const webpack = require('webpack');
+// const convert = require('koa-convert');
+// const koaWebpackMiddleware = require('koa-webpack-middleware');
+// const webpackDevMiddleware = koaWebpackMiddleware.devMiddleware;
+// const webpackHotMiddleware = koaWebpackMiddleware.hotMiddleware;
+// const compiler = webpack(webpackDev);
 
-const wdm = webpackDevMiddleware(compiler, {
-    watchOptions: {
-        aggregateTimeout: 300,
-        poll: true
-    },
-    reload: true,
-    publicPath: webpackDev.output.publicPath,
-    stats: {
-        colors: true
+// const wdm = webpackDevMiddleware(compiler, {
+//     watchOptions: {
+//         aggregateTimeout: 300,
+//         poll: true
+//     },
+//     reload: true,
+//     publicPath: webpackDev.output.publicPath,
+//     stats: {
+//         colors: true
+//     }
+// })
+
+// app.use(convert(wdm));
+// app.use(convert(webpackHotMiddleware(compiler)));
+
+app.use(middleware({
+    config: webpackDev,
+    dev: {
+        stats: {
+            colors: true
+        }
     }
-})
-app.use(convert(wdm));
-app.use(convert(webpackHotMiddleware(compiler)));
-
+}));
 
 
 // fs.readdirSync(model)
@@ -68,16 +76,6 @@ app.use(async (ctx, next) => {
     const ms = Date.now() - start;
     console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
-
-app.use(middleware({
-    config: webpackDev,
-    dev: {
-        stats: {
-            colors: true
-        }
-    }
-}));
-
 
 
 app.use(bodyParser());
